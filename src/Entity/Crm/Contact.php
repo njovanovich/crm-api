@@ -10,13 +10,15 @@ namespace App\Entity\Crm;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use App\Entity\Person as Person;
+
 /**
  * Class Contact
  * @package App\Entity\Crm
  * @ORM\Entity()
  * @ORM\Table("contacts")
  */
-class Contact extends \App\Entity\Person
+class Contact extends Person
 {
     /**
      * @ORM\Column(name="contact_type",length=255)
@@ -24,9 +26,11 @@ class Contact extends \App\Entity\Person
     private $contactType;
 
     /**
-     * @ORM\OneToOne(targetEntity="Note")
-     * @ORM\JoinColumn(name="note_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Person")
+     * @ORM\JoinTable(name="users_groups",
+     *      joinColumns={@ORM\JoinColumn(name="user", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="group", referencedColumnName="id")}
+     *      )
      */
-    private $note;
-
+    var $person;
 }

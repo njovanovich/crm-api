@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Relationship{% endblock %}
+
+{% block body %}
+    <h1>Relationship</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ relationship.name }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ relationship.type }}</td>
+            </tr>
+            <tr>
+                <th>Aliases</th>
+                <td>{{ relationship.aliases }}</td>
+            </tr>
+            <tr>
+                <th>StartTime</th>
+                <td>{{ relationship.startTime ? relationship.startTime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndTime</th>
+                <td>{{ relationship.endTime ? relationship.endTime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ relationship.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ relationship.created ? relationship.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ relationship.updated ? relationship.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('relationship_index') }}">back to list</a>
+
+    <a href="{{ path('relationship_edit', {'id': relationship.id}) }}">edit</a>
+
+    {{ include('relationship/_delete_form.html.twig') }}
+{% endblock %}

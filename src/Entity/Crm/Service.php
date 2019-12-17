@@ -9,8 +9,10 @@
 namespace App\Entity\Crm;
 
 use App\Entity\Event;
+use App\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * Class Service
@@ -20,5 +22,30 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Service extends Event
 {
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\App\Entity\Properties")
+     * @ORM\JoinTable(name="services_to_properties",
+     *      joinColumns={@ORM\JoinColumn(name="services", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="properties", referencedColumnName="id")}
+     *      )
+     */
+    private $serviceProperties;
+
+    /**
+     * @return mixed
+     */
+    public function getServiceProperties()
+    {
+        return $this->serviceProperties;
+    }
+
+    /**
+     * @param mixed $serviceProperties
+     */
+    public function setServiceProperties($serviceProperties): void
+    {
+        $this->serviceProperties = $serviceProperties;
+    }
 
 }

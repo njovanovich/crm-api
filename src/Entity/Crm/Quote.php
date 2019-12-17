@@ -25,10 +25,26 @@ use Doctrine\ORM\Mapping as ORM;
 class Quote extends BaseObject
 {
 
+    /**
+     * @ORM\Column(name="quote_number",length=40)
+     */
+    private $quoteNumber;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
+     */
     private $contact;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Business")
+     * @ORM\JoinColumn(name="business", referencedColumnName="id")
+     */
     private $business;
 
+    /**
+     * @ORM\Column(type="text")
+     */
     private $quoteLines;
 
 }

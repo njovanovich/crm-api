@@ -28,13 +28,13 @@ class Lead extends BaseObject
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @ORM\OneToOne(targetEntity="Business")
-     * @ORM\JoinColumn(name="business_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="business", referencedColumnName="id")
      */
     private $business;
 
@@ -42,5 +42,71 @@ class Lead extends BaseObject
      * @ORM\Column(type="float")
      */
     private $amount;
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param mixed $person
+     */
+    public function setPerson($person): void
+    {
+        $this->person = $person;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBusiness()
+    {
+        return $this->business;
+    }
+
+    /**
+     * @param mixed $business
+     */
+    public function setBusiness($business): void
+    {
+        $this->business = $business;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param mixed $amount
+     */
+    public function setAmount($amount): void
+    {
+        $this->amount = $amount;
+    }
+
+
 
 }

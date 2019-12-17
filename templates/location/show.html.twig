@@ -8,6 +8,14 @@
     <table class="table">
         <tbody>
             <tr>
+                <th>Name</th>
+                <td>{{ location.name }}</td>
+            </tr>
+            <tr>
+                <th>GeoSpatial</th>
+                <td>{{ location.geoSpatial }}</td>
+            </tr>
+            <tr>
                 <th>Id</th>
                 <td>{{ location.id }}</td>
             </tr>
@@ -18,14 +26,6 @@
             <tr>
                 <th>Updated</th>
                 <td>{{ location.updated ? location.updated|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ location.name }}</td>
-            </tr>
-            <tr>
-                <th>GeoSpatial</th>
-                <td>{{ location.geoSpatial }}</td>
             </tr>
         </tbody>
     </table>

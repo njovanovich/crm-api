@@ -17,7 +17,7 @@ use App\Entity\Document;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Lead
+ * Class Note
  * @package App\Entity\Crm
  * @ORM\Entity()
  * @ORM\Table("notes")

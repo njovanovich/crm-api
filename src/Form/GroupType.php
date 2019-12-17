@@ -2,26 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\Location;
+use App\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Location1Type extends AbstractType
+class GroupType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('type')
+            ->add('created')
+            ->add('updated')
             ->add('name')
-            ->add('geoSpatial')
-            ->add('address')
+            ->add('createdBy')
+            ->add('updatedBy')
+            ->add('people')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Location::class,
+            'data_class' => Group::class,
         ]);
     }
 }

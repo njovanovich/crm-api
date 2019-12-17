@@ -19,49 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Message extends BaseObject
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $updated;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="created_by_id", referencedColumnName="id")
-     */
-    protected $createdBy;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Permission")
-     * @ORM\JoinColumn(name="permission_id", referencedColumnName="id")
-     */
-    protected $permissions;
-
-    /**
-     * @ORM\Column(name="updated_by_id")
-     * @ORM\OneToOne(targetEntity="App\Entity\Person")
-     */
-    protected $updatedBy;
-
-    /**
      * @ORM\OneToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="sender_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="sender", referencedColumnName="id")
      */
     private $sender;
 
     /**
      * @ORM\OneToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="recipient_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="recipient", referencedColumnName="id")
      */
     private $recipient;
 
@@ -72,7 +37,7 @@ class Message extends BaseObject
 
     /**
      * @ORM\OneToOne(targetEntity="Document")
-     * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="document", referencedColumnName="id")
      */
     private $content;
 
@@ -85,5 +50,102 @@ class Message extends BaseObject
      * @ORM\Column(type="datetime")
      */
     private $received;
+
+    /**
+     * @return mixed
+     */
+    public function getSender()
+    {
+        return $this->sender;
+    }
+
+    /**
+     * @param mixed $sender
+     */
+    public function setSender($sender): void
+    {
+        $this->sender = $sender;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipient()
+    {
+        return $this->recipient;
+    }
+
+    /**
+     * @param mixed $recipient
+     */
+    public function setRecipient($recipient): void
+    {
+        $this->recipient = $recipient;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProtocol()
+    {
+        return $this->protocol;
+    }
+
+    /**
+     * @param mixed $protocol
+     */
+    public function setProtocol($protocol): void
+    {
+        $this->protocol = $protocol;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setContent($content): void
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSent()
+    {
+        return $this->sent;
+    }
+
+    /**
+     * @param mixed $sent
+     */
+    public function setSent($sent): void
+    {
+        $this->sent = $sent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReceived()
+    {
+        return $this->received;
+    }
+
+    /**
+     * @param mixed $received
+     */
+    public function setReceived($received): void
+    {
+        $this->received = $received;
+    }
+
 
 }

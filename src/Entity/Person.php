@@ -17,43 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table("people")
  */
-class Person extends Entity
+class Person extends BaseObject
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $updated;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="created_by_id", referencedColumnName="id")
-     */
-    protected $createdBy;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Permission")
-     * @ORM\JoinColumn(name="permission_id", referencedColumnName="id")
-     */
-    protected $permissions;
-
-    /**
-     * @ORM\Column(name="updated_by_id")
-     * @ORM\OneToOne(targetEntity="App\Entity\Person")
-     */
-    protected $updatedBy;
-
     /**
      * @ORM\Column(length=255)
      */
@@ -79,36 +44,33 @@ class Person extends Entity
      */
     private $email;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Relationship")
-     */
-    private $relationships;
+//    /**
+//     * @ORM\ManyToOne(targetEntity="Relationship")
+//     */
+//    private $relationships;
+
+//    /**
+//     * @ORM\ManyToOne(targetEntity="Location")
+//     */
+//    private $locations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Location")
+     * @ORM\ManyToMany(targetEntity="Permission")
+     * @ORM\JoinTable(name="person_permission",
+     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="permission", referencedColumnName="id")}
+     *      )
      */
-    private $locations;
+    protected $permissions;
 
     /**
-     * @ORM\OneToMany(targetEntity="ContactDetails", mappedBy="market", indexBy="symbol"))
+     * @ORM\ManyToMany(targetEntity="ContactDetails"))
+     * @ORM\JoinTable(name="person_contacts",
+     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="contact", referencedColumnName="id")}
+     *      )
      */
     private $contactDetails;
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
-    {
-        $this->name = $name;
-    }
 
     /**
      * @return mixed
@@ -156,6 +118,86 @@ class Person extends Entity
     public function setLocations($locations): void
     {
         $this->locations = $locations;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param mixed $lastName
+     */
+    public function setLastName($lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
+     * @param mixed $middleName
+     */
+    public function setMiddleName($middleName): void
+    {
+        $this->middleName = $middleName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param mixed $firstName
+     */
+    public function setFirstName($firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param mixed $gender
+     */
+    public function setGender($gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContactDetails()
+    {
+        return $this->contactDetails;
+    }
+
+    /**
+     * @param mixed $contactDetails
+     */
+    public function setContactDetails($contactDetails): void
+    {
+        $this->contactDetails = $contactDetails;
     }
 
 

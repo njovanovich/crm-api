@@ -24,11 +24,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Business extends Group
 {
     /**
-     * @ORM\Column(length=255)
-     */
-    private $type = "business";
-
-    /**
      * @ORM\Column(name="business_number",length=255)
      */
     private $businessNumber = "business";

@@ -35,26 +35,16 @@ abstract class BaseObject
     protected $updated;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="created_by_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
     protected $createdBy;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Permission")
-     * @ORM\JoinColumn(name="permission_id", referencedColumnName="id")
-     */
-    protected $permissions;
-
-    /**
-     * @ORM\Column(name="updated_by_id")
-     * @ORM\OneToOne(targetEntity="App\Entity\Person")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")*
      */
     protected $updatedBy;
-
-    static protected function log($oldObject, $newObject){
-
-    }
 
     /**
      * @return mixed
@@ -135,8 +125,6 @@ abstract class BaseObject
     {
         $this->permissions = $permissions;
     }
-
-
 
     /**
      * @return mixed

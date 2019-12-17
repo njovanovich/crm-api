@@ -2,28 +2,34 @@
 
 namespace App\Form;
 
-use App\Entity\Location;
+use App\Entity\Person;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Location4Type extends AbstractType
+class PersonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('lastName')
+            ->add('middleName')
+            ->add('firstName')
+            ->add('gender')
+            ->add('email')
             ->add('created')
             ->add('updated')
-            ->add('name')
-            ->add('geoSpatial')
-            ->add('address')
+            ->add('permissions')
+            ->add('contactDetails')
+            ->add('createdBy')
+            ->add('updatedBy')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Location::class,
+            'data_class' => Person::class,
         ]);
     }
 }

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message index{% endblock %}
+
+{% block body %}
+    <h1>Message index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Protocol</th>
+                <th>Sent</th>
+                <th>Received</th>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.protocol }}</td>
+                <td>{{ message.sent ? message.sent|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message.received ? message.received|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message.id }}</td>
+                <td>{{ message.created ? message.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message.updated ? message.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('message_show', {'id': message.id}) }}">show</a>
+                    <a href="{{ path('message_edit', {'id': message.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('message_new') }}">Create new</a>
+{% endblock %}

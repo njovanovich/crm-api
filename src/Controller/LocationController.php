@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Location;
-use App\Form\Location4Type;
+use App\Form\LocationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +34,7 @@ class LocationController extends AbstractController
     public function new(Request $request): Response
     {
         $location = new Location();
-        $form = $this->createForm(Location4Type::class, $location);
+        $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,7 +66,7 @@ class LocationController extends AbstractController
      */
     public function edit(Request $request, Location $location): Response
     {
-        $form = $this->createForm(Location4Type::class, $location);
+        $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
