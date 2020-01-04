@@ -12,16 +12,15 @@ class PermissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('created')
+            ->add('updated')
             ->add('type')
             ->add('objectType')
             ->add('objectId')
             ->add('pemission')
-            ->add('created')
-            ->add('updated')
-            ->add('group')
-            ->add('person')
             ->add('createdBy')
             ->add('updatedBy')
+            ->add('person')
         ;
     }
 

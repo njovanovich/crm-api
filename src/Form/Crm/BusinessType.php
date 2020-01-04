@@ -12,14 +12,7 @@ class BusinessType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type')
-            ->add('created')
-            ->add('updated')
-            ->add('name')
             ->add('businessNumber')
-            ->add('createdBy')
-            ->add('updatedBy')
-            ->add('people')
         ;
     }
 

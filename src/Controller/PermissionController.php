@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Permission;
 use App\Form\PermissionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,13 +20,9 @@ class PermissionController extends AbstractController
      */
     public function index(): Response
     {
-        $permissions = $this->getDoctrine()
-            ->getRepository(Permission::class)
-            ->findAll();
-
-        return $this->render('permission/index.html.twig', [
-            'permissions' => $permissions,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->index(Permission::class);
     }
 
     /**
@@ -33,22 +30,9 @@ class PermissionController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $permission = new Permission();
-        $form = $this->createForm(PermissionType::class, $permission);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($permission);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('permission_index');
-        }
-
-        return $this->render('permission/new.html.twig', [
-            'permission' => $permission,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->new($request, "App\Entity\Permission", "App\Form\PermissionType");
     }
 
     /**
@@ -56,9 +40,9 @@ class PermissionController extends AbstractController
      */
     public function show(Permission $permission): Response
     {
-        return $this->render('permission/show.html.twig', [
-            'permission' => $permission,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->show($permission, Permission::class);
     }
 
     /**
@@ -66,19 +50,9 @@ class PermissionController extends AbstractController
      */
     public function edit(Request $request, Permission $permission): Response
     {
-        $form = $this->createForm(PermissionType::class, $permission);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('permission_index');
-        }
-
-        return $this->render('permission/edit.html.twig', [
-            'permission' => $permission,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->edit($request, $permission, PermissionType::class);
     }
 
     /**
@@ -86,12 +60,8 @@ class PermissionController extends AbstractController
      */
     public function delete(Request $request, Permission $permission): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$permission->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($permission);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('permission_index');
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->delete($request, $permission, $token='');
     }
 }

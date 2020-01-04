@@ -19,10 +19,6 @@ class AddressType extends AbstractType
             ->add('state')
             ->add('postcode')
             ->add('country')
-            ->add('created')
-            ->add('updated')
-            ->add('createdBy')
-            ->add('updatedBy')
         ;
     }
 

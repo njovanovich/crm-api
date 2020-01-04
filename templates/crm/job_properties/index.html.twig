@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JobProperties index{% endblock %}
+
+{% block body %}
+    <h1>JobProperties index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for job_property in job_properties %}
+            <tr>
+                <td>{{ job_property.id }}</td>
+                <td>{{ job_property.created ? job_property.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ job_property.updated ? job_property.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ job_property.name }}</td>
+                <td>{{ job_property.value }}</td>
+                <td>
+                    <a href="{{ path('crm_job_properties_show', {'id': job_property.id}) }}">show</a>
+                    <a href="{{ path('crm_job_properties_edit', {'id': job_property.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('crm_job_properties_new') }}">Create new</a>
+{% endblock %}

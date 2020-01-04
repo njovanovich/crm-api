@@ -8,6 +8,9 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
                 <th>Name</th>
                 <th>Address1</th>
                 <th>Address2</th>
@@ -15,15 +18,15 @@
                 <th>State</th>
                 <th>Postcode</th>
                 <th>Country</th>
-                <th>Id</th>
-                <th>Created</th>
-                <th>Updated</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for address in addresses %}
             <tr>
+                <td>{{ address.id }}</td>
+                <td>{{ address.created ? address.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ address.updated ? address.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ address.name }}</td>
                 <td>{{ address.address1 }}</td>
                 <td>{{ address.address2 }}</td>
@@ -31,9 +34,6 @@
                 <td>{{ address.state }}</td>
                 <td>{{ address.postcode }}</td>
                 <td>{{ address.country }}</td>
-                <td>{{ address.id }}</td>
-                <td>{{ address.created ? address.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ address.updated ? address.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('address_show', {'id': address.id}) }}">show</a>
                     <a href="{{ path('address_edit', {'id': address.id}) }}">edit</a>

@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class Person
@@ -17,8 +18,39 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table("people")
  */
-class Person extends BaseObject
+class Person
 {
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+/**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type="datetime",columnDefinition="TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+     */
+    protected $updated;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     */
+    protected $createdBy;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")*
+     */
+    protected $updatedBy;
+
     /**
      * @ORM\Column(length=255)
      */
@@ -44,33 +76,20 @@ class Person extends BaseObject
      */
     private $email;
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="Relationship")
-//     */
-//    private $relationships;
-
-//    /**
-//     * @ORM\ManyToOne(targetEntity="Location")
-//     */
-//    private $locations;
+    /**
+     * @ORM\Column(length=255,name="phone")
+     */
+    private $phone;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Permission")
-     * @ORM\JoinTable(name="person_permission",
-     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="permission", referencedColumnName="id")}
+     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
+     * @ORM\JoinTable(name="person_notes",
+     *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id")}
      *      )
+     *
      */
-    protected $permissions;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="ContactDetails"))
-     * @ORM\JoinTable(name="person_contacts",
-     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="contact", referencedColumnName="id")}
-     *      )
-     */
-    private $contactDetails;
+    private $note;
 
     /**
      * @return mixed
@@ -86,22 +105,6 @@ class Person extends BaseObject
     public function setEmail($email): void
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRelationships()
-    {
-        return $this->relationships;
-    }
-
-    /**
-     * @param mixed $relationships
-     */
-    public function setRelationships($relationships): void
-    {
-        $this->relationships = $relationships;
     }
 
     /**
@@ -187,18 +190,121 @@ class Person extends BaseObject
     /**
      * @return mixed
      */
-    public function getContactDetails()
+    public function getId()
     {
-        return $this->contactDetails;
+        return $this->id;
     }
 
     /**
-     * @param mixed $contactDetails
+     * @param mixed $id
      */
-    public function setContactDetails($contactDetails): void
+    public function setId($id): void
     {
-        $this->contactDetails = $contactDetails;
+        $this->id = $id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param mixed $updated
+     */
+    public function setUpdated($updated): void
+    {
+        $this->updated = $updated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy($createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param mixed $updatedBy
+     */
+    public function setUpdatedBy($updatedBy): void
+    {
+        $this->updatedBy = $updatedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param mixed $note
+     */
+    public function setNote($note): void
+    {
+        $this->note = $note;
+    }
+
+    /**
+     * @param mixed $note
+     */
+    public function addNote($note): void
+    {
+        $this->note[] = $note;
+    }
 
 }

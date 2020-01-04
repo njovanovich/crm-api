@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaxRate{% endblock %}
+
+{% block body %}
+    <h1>TaxRate</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tax_rate.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ tax_rate.created ? tax_rate.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ tax_rate.updated ? tax_rate.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ tax_rate.name }}</td>
+            </tr>
+            <tr>
+                <th>Rate</th>
+                <td>{{ tax_rate.rate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('crm_tax_rate_index') }}">back to list</a>
+
+    <a href="{{ path('crm_tax_rate_edit', {'id': tax_rate.id}) }}">edit</a>
+
+    {{ include('crm_tax_rate/_delete_form.html.twig') }}
+{% endblock %}

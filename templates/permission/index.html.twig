@@ -8,26 +8,26 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
                 <th>Type</th>
                 <th>ObjectType</th>
                 <th>ObjectId</th>
                 <th>Pemission</th>
-                <th>Id</th>
-                <th>Created</th>
-                <th>Updated</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for permission in permissions %}
             <tr>
+                <td>{{ permission.id }}</td>
+                <td>{{ permission.created ? permission.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ permission.updated ? permission.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ permission.type }}</td>
                 <td>{{ permission.objectType }}</td>
                 <td>{{ permission.objectId }}</td>
                 <td>{{ permission.pemission }}</td>
-                <td>{{ permission.id }}</td>
-                <td>{{ permission.created ? permission.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ permission.updated ? permission.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('permission_show', {'id': permission.id}) }}">show</a>
                     <a href="{{ path('permission_edit', {'id': permission.id}) }}">edit</a>

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Lead{% endblock %}
+
+{% block body %}
+    <h1>Edit Lead</h1>
+
+    {{ include('crm_lead/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('crm_lead_index') }}">back to list</a>
+
+    {{ include('crm_lead/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaxRate index{% endblock %}
+
+{% block body %}
+    <h1>TaxRate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Name</th>
+                <th>Rate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tax_rate in tax_rates %}
+            <tr>
+                <td>{{ tax_rate.id }}</td>
+                <td>{{ tax_rate.created ? tax_rate.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tax_rate.updated ? tax_rate.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tax_rate.name }}</td>
+                <td>{{ tax_rate.rate }}</td>
+                <td>
+                    <a href="{{ path('crm_tax_rate_show', {'id': tax_rate.id}) }}">show</a>
+                    <a href="{{ path('crm_tax_rate_edit', {'id': tax_rate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('crm_tax_rate_new') }}">Create new</a>
+{% endblock %}

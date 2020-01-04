@@ -8,6 +8,18 @@
     <table class="table">
         <tbody>
             <tr>
+                <th>Id</th>
+                <td>{{ permission.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ permission.created ? permission.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ permission.updated ? permission.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
                 <th>Type</th>
                 <td>{{ permission.type }}</td>
             </tr>
@@ -22,18 +34,6 @@
             <tr>
                 <th>Pemission</th>
                 <td>{{ permission.pemission }}</td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ permission.id }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ permission.created ? permission.created|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{{ permission.updated ? permission.updated|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

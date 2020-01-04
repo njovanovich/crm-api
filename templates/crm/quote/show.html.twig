@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quote{% endblock %}
+
+{% block body %}
+    <h1>Quote</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ quote.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ quote.created ? quote.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ quote.updated ? quote.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>QuoteNumber</th>
+                <td>{{ quote.quoteNumber }}</td>
+            </tr>
+            <tr>
+                <th>QuoteLines</th>
+                <td>{{ quote.quoteLines }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('crm_quote_index') }}">back to list</a>
+
+    <a href="{{ path('crm_quote_edit', {'id': quote.id}) }}">edit</a>
+
+    {{ include('crm_quote/_delete_form.html.twig') }}
+{% endblock %}

@@ -11,6 +11,7 @@ namespace App\Entity;
 use App\Entity\Location;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class Event
@@ -18,8 +19,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table("events")
  */
-class Event extends BaseObject
+class Event
 {
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
 
     /**
      * @ORM\Column(length=255)
@@ -47,10 +55,15 @@ class Event extends BaseObject
     private $people;
 
     /**
-     * Duration in hours
-     * @ORM\Column(type="float")
+     * Duration in minutes
+     * @ORM\Column(type="integer")
      */
     private $duration;
+
+    /**
+     * @ORM\Column()
+     */
+    private $type;
 
     /**
      * @return mixed
@@ -131,4 +144,22 @@ class Event extends BaseObject
     {
         $this->duration = $duration;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+
 }

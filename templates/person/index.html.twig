@@ -8,28 +8,28 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
                 <th>LastName</th>
                 <th>MiddleName</th>
                 <th>FirstName</th>
                 <th>Gender</th>
                 <th>Email</th>
-                <th>Id</th>
-                <th>Created</th>
-                <th>Updated</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for person in people %}
             <tr>
+                <td>{{ person.id }}</td>
+                <td>{{ person.created ? person.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ person.updated ? person.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ person.lastName }}</td>
                 <td>{{ person.middleName }}</td>
                 <td>{{ person.firstName }}</td>
                 <td>{{ person.gender }}</td>
                 <td>{{ person.email }}</td>
-                <td>{{ person.id }}</td>
-                <td>{{ person.created ? person.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ person.updated ? person.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('person_show', {'id': person.id}) }}">show</a>
                     <a href="{{ path('person_edit', {'id': person.id}) }}">edit</a>

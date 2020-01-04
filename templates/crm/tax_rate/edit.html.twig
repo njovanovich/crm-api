@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TaxRate{% endblock %}
+
+{% block body %}
+    <h1>Edit TaxRate</h1>
+
+    {{ include('crm_tax_rate/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('crm_tax_rate_index') }}">back to list</a>
+
+    {{ include('crm_tax_rate/_delete_form.html.twig') }}
+{% endblock %}

@@ -8,6 +8,18 @@
     <table class="table">
         <tbody>
             <tr>
+                <th>Id</th>
+                <td>{{ person.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ person.created ? person.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ person.updated ? person.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
                 <th>LastName</th>
                 <td>{{ person.lastName }}</td>
             </tr>
@@ -26,18 +38,6 @@
             <tr>
                 <th>Email</th>
                 <td>{{ person.email }}</td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ person.id }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ person.created ? person.created|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{{ person.updated ? person.updated|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

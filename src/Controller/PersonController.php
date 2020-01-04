@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Entity\Crm\Note;
 use App\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,13 +21,9 @@ class PersonController extends AbstractController
      */
     public function index(): Response
     {
-        $people = $this->getDoctrine()
-            ->getRepository(Person::class)
-            ->findAll();
-
-        return $this->render('person/index.html.twig', [
-            'people' => $people,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->index(Person::class);
     }
 
     /**
@@ -33,22 +31,9 @@ class PersonController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $person = new Person();
-        $form = $this->createForm(PersonType::class, $person);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($person);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('person_index');
-        }
-
-        return $this->render('person/new.html.twig', [
-            'person' => $person,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->new($request, "App\Entity\Person", "App\Form\PersonType");
     }
 
     /**
@@ -56,9 +41,9 @@ class PersonController extends AbstractController
      */
     public function show(Person $person): Response
     {
-        return $this->render('person/show.html.twig', [
-            'person' => $person,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->show($person, Person::class);
     }
 
     /**
@@ -66,19 +51,9 @@ class PersonController extends AbstractController
      */
     public function edit(Request $request, Person $person): Response
     {
-        $form = $this->createForm(PersonType::class, $person);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('person_index');
-        }
-
-        return $this->render('person/edit.html.twig', [
-            'person' => $person,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->edit($request, $person, PersonType::class);
     }
 
     /**
@@ -86,12 +61,29 @@ class PersonController extends AbstractController
      */
     public function delete(Request $request, Person $person): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($person);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->delete($request, $person, $token='');
+    }
+
+    /**
+     * @Route("/{id}/addNote/{noteid}", name="person_addnote", methods={"POST"})
+     */
+    public function addnote(Request $request, Person $person): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository(Note::class);
+
+        $noteObject = $repository->find($request->get('noteid'));
+
+        if ($noteObject) {
+            $person->addNote($noteObject);
+            $entityManager->persist($person);
+            $entityManager->persist($noteObject);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('person_index');
+        return new JsonResponse(["success"=>true]);
     }
+
 }

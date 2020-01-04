@@ -4,6 +4,7 @@ namespace App\Controller\Crm;
 
 use App\Entity\Crm\Business;
 use App\Form\Crm\BusinessType;
+use App\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,15 +18,15 @@ class BusinessController extends AbstractController
     /**
      * @Route("/", name="crm_business_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $businesses = $this->getDoctrine()
-            ->getRepository(Business::class)
-            ->findAll();
+        $base = new BaseController();
+        $base->container = $this->container;
 
-        return $this->render('crm/business/index.html.twig', [
-            'businesses' => $businesses,
-        ]);
+        $limit = (int)($request->get('limit') ?? 12);
+        $start = (int)($request->get('start') ?? 0);
+
+        return $base->index(Business::class, $start, $limit);
     }
 
     /**
@@ -33,22 +34,9 @@ class BusinessController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $business = new Business();
-        $form = $this->createForm(BusinessType::class, $business);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($business);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('crm_business_index');
-        }
-
-        return $this->render('crm/business/new.html.twig', [
-            'business' => $business,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->new($request, "App\Entity\Crm\Business", "App\Form\Crm\BusinessType");
     }
 
     /**
@@ -56,9 +44,9 @@ class BusinessController extends AbstractController
      */
     public function show(Business $business): Response
     {
-        return $this->render('crm/business/show.html.twig', [
-            'business' => $business,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->show($business, Business::class);
     }
 
     /**
@@ -66,19 +54,9 @@ class BusinessController extends AbstractController
      */
     public function edit(Request $request, Business $business): Response
     {
-        $form = $this->createForm(BusinessType::class, $business);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('crm_business_index');
-        }
-
-        return $this->render('crm/business/edit.html.twig', [
-            'business' => $business,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->edit($request, $business, BusinessType::class);
     }
 
     /**
@@ -86,12 +64,8 @@ class BusinessController extends AbstractController
      */
     public function delete(Request $request, Business $business): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$business->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($business);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('crm_business_index');
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->delete($request, $business, $token='');
     }
 }

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Business index{% endblock %}
+
+{% block body %}
+    <h1>Business index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>BusinessNumber</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for business in businesses %}
+            <tr>
+                <td>{{ business.id }}</td>
+                <td>{{ business.created ? business.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ business.updated ? business.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ business.businessNumber }}</td>
+                <td>
+                    <a href="{{ path('crm_business_show', {'id': business.id}) }}">show</a>
+                    <a href="{{ path('crm_business_edit', {'id': business.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('crm_business_new') }}">Create new</a>
+{% endblock %}

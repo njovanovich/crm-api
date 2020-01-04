@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email{% endblock %}
+
+{% block body %}
+    <h1>Email</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ email.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ email.created ? email.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ email.updated ? email.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>{{ email.subject }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ email.text }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('crm_email_index') }}">back to list</a>
+
+    <a href="{{ path('crm_email_edit', {'id': email.id}) }}">edit</a>
+
+    {{ include('crm_email/_delete_form.html.twig') }}
+{% endblock %}

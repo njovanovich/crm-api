@@ -19,13 +19,9 @@ class AddressController extends AbstractController
      */
     public function index(): Response
     {
-        $addresses = $this->getDoctrine()
-            ->getRepository(Address::class)
-            ->findAll();
-
-        return $this->render('address/index.html.twig', [
-            'addresses' => $addresses,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->index(Address::class);
     }
 
     /**
@@ -33,22 +29,9 @@ class AddressController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $address = new Address();
-        $form = $this->createForm(AddressType::class, $address);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($address);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('address_index');
-        }
-
-        return $this->render('address/new.html.twig', [
-            'address' => $address,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->new($request, "App\Entity\Address", "App\Form\AddressType");
     }
 
     /**
@@ -56,9 +39,9 @@ class AddressController extends AbstractController
      */
     public function show(Address $address): Response
     {
-        return $this->render('address/show.html.twig', [
-            'address' => $address,
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->show($address, Address::class);
     }
 
     /**
@@ -66,19 +49,9 @@ class AddressController extends AbstractController
      */
     public function edit(Request $request, Address $address): Response
     {
-        $form = $this->createForm(AddressType::class, $address);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('address_index');
-        }
-
-        return $this->render('address/edit.html.twig', [
-            'address' => $address,
-            'form' => $form->createView(),
-        ]);
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->edit($request, $address, AddressType::class);
     }
 
     /**
@@ -86,12 +59,8 @@ class AddressController extends AbstractController
      */
     public function delete(Request $request, Address $address): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$address->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($address);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('address_index');
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->delete($request, $address, $token='');
     }
 }

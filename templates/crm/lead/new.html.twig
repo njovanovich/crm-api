@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Lead{% endblock %}
+
+{% block body %}
+    <h1>Create new Lead</h1>
+
+    {{ include('crm_lead/_form.html.twig') }}
+
+    <a href="{{ path('crm_lead_index') }}">back to list</a>
+{% endblock %}

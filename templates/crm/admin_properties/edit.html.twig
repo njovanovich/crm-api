@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit AdminProperties{% endblock %}
+
+{% block body %}
+    <h1>Edit AdminProperties</h1>
+
+    {{ include('crm_admin_properties/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('crm_admin_properties_index') }}">back to list</a>
+
+    {{ include('crm_admin_properties/_delete_form.html.twig') }}
+{% endblock %}

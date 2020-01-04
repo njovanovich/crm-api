@@ -9,6 +9,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class BaseObject
@@ -24,13 +25,14 @@ abstract class BaseObject
      */
     protected $id;
 
-    /**
+/**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     protected $created;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", columnDefinition="TIMESTAMP")
      */
     protected $updated;
 
