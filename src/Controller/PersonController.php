@@ -37,7 +37,7 @@ class PersonController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="person_show", methods={"GET"})
+     * @Route("/{id}", name="person_show", methods={"GET"}, requirements={"id":"\d+"})
      */
     public function show(Person $person): Response
     {
@@ -57,7 +57,7 @@ class PersonController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="person_delete", methods={"DELETE"})
+     * @Route("/{id}", name="person_delete", methods={"DELETE"},  requirements={"id":"\d+"})
      */
     public function delete(Request $request, Person $person): Response
     {
@@ -67,19 +67,20 @@ class PersonController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/addNote/{noteid}", name="person_addnote", methods={"POST"})
+     * @Route("/{id}/addNote", name="person_addnote", methods={"POST"})
      */
     public function addnote(Request $request, Person $person): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $repository = $entityManager->getRepository(Note::class);
 
-        $noteObject = $repository->find($request->get('noteid'));
+        $note = new Note();
+        $note->setContents($request->get('contents'));
 
-        if ($noteObject) {
-            $person->addNote($noteObject);
+        if ($note) {
+            $entityManager->persist($note);
+            $entityManager->flush();
+            $person->addNote($note);
             $entityManager->persist($person);
-            $entityManager->persist($noteObject);
             $entityManager->flush();
         }
 

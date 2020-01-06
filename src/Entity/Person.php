@@ -28,7 +28,7 @@ class Person
      */
     protected $id;
 
-/**
+    /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -57,7 +57,7 @@ class Person
     private $lastName;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
      */
     private $middleName;
 
@@ -82,14 +82,21 @@ class Person
     private $phone;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note",fetch="EAGER")
      * @ORM\JoinTable(name="person_notes",
      *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id", unique=true)}
      *      )
-     *
      */
-    private $note;
+    private $notes;
+
+
+    /**
+     * Person constructor.
+     */
+    public function __construct()
+    {
+    }
 
     /**
      * @return mixed
@@ -105,22 +112,6 @@ class Person
     public function setEmail($email): void
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLocations()
-    {
-        return $this->locations;
-    }
-
-    /**
-     * @param mixed $locations
-     */
-    public function setLocations($locations): void
-    {
-        $this->locations = $locations;
     }
 
     /**
@@ -286,25 +277,21 @@ class Person
     /**
      * @return mixed
      */
-    public function getNote()
+    public function getNotes()
     {
-        return $this->note;
+        return $this->notes;
     }
 
     /**
-     * @param mixed $note
+     * @param mixed $notes
      */
-    public function setNote($note): void
+    public function setNotes($notes): void
     {
-        $this->note = $note;
+        $this->notes = $notes;
     }
 
-    /**
-     * @param mixed $note
-     */
-    public function addNote($note): void
-    {
-        $this->note[] = $note;
-    }
 
+    public function addNote($note){
+        $this->notes[] = $note;
+    }
 }

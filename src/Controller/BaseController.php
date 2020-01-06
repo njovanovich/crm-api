@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use App\Entity\Person;
+
 class BaseController extends AbstractController
 {
 
@@ -66,29 +68,33 @@ class BaseController extends AbstractController
         $form = $this->createForm($classType, $object);
         $form->handleRequest($request);
 
-        //if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $object = $form->getData();
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($object);
             $entityManager->flush();
 
             return new JsonResponse([
-                'id' => $object->id,
+                'id' => $object->getId(),
                 'success'=>true
             ]);
-        //}
+        }
 
         return new JsonResponse(['success'=>false]);
     }
 
     public function show($object, $class, $token=''): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-            "SELECT c FROM $class c WHERE c.id=" . $object->getId()
-        );
-        $objects = $query->getArrayResult();
+        $serializer = $this->container->get('serializer');
+        $serializedObject = $serializer->serialize($object, 'json');
+        $responseData = [
+            'data' => [json_decode($serializedObject)],
+            'success' => true
+        ];
         $response = new JsonResponse();
-        $response->setData($objects);
+        $response->setData($responseData);
 
         $response->headers->set('Content-Type', 'application/json');
         return $response;

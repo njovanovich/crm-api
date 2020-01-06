@@ -32,7 +32,7 @@ class Event
     /**
      * @ORM\Column(length=255)
      */
-    private $name;
+    private $description;
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,10 +40,15 @@ class Event
     private $dateTime;
 
     /**
+     * @ORM\Column()
+     */
+    private $status;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Location")
      * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
-    private $location;
+    //private $location;
 
     /**
      * @ORM\ManyToMany(targetEntity="Person")
@@ -68,17 +73,33 @@ class Event
     /**
      * @return mixed
      */
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
+        return $this->description;
     }
 
     /**
-     * @param mixed $name
+     * @param mixed $description
      */
-    public function setName($name): void
+    public function setDescription($description): void
     {
-        $this->name = $name;
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
     }
 
     /**
@@ -100,22 +121,6 @@ class Event
     /**
      * @return mixed
      */
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
-    /**
-     * @param mixed $location
-     */
-    public function setLocation($location): void
-    {
-        $this->location = $location;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getPeople()
     {
         return $this->people;
@@ -127,6 +132,14 @@ class Event
     public function setPeople($people): void
     {
         $this->people = $people;
+    }
+
+    /**
+     * @param mixed $people
+     */
+    public function addPerson($people): void
+    {
+        $this->people[] = $people;
     }
 
     /**

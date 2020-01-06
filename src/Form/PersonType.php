@@ -12,17 +12,12 @@ class PersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('created')
-            ->add('updated')
             ->add('lastName')
             ->add('middleName')
             ->add('firstName')
             ->add('gender')
+            ->add('phone')
             ->add('email')
-            ->add('createdBy')
-            ->add('updatedBy')
-            ->add('permissions')
-            ->add('contactDetails')
         ;
     }
 
