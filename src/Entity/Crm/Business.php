@@ -32,7 +32,7 @@ class Business
      */
     protected $id;
 
-/**
+    /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -66,7 +66,7 @@ class Business
     private $acn;
 
     /**
-     * @ORM\Column(name="misc_codes")
+     * @ORM\Column(name="misc_codes", nullable=true)
      */
     private $miscCodes;
 
@@ -211,22 +211,6 @@ class Business
     public function setUpdatedBy($updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBusinessNumber()
-    {
-        return $this->businessNumber;
-    }
-
-    /**
-     * @param mixed $businessNumber
-     */
-    public function setBusinessNumber($businessNumber): void
-    {
-        $this->businessNumber = $businessNumber;
     }
 
     /**

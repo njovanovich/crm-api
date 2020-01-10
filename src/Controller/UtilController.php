@@ -25,6 +25,16 @@ class UtilController extends AbstractController
                 'onclick' => 'Ext.getCmp("pnlMain").getLayout().setActiveItem(1);',
             ],
             [
+                'name' => 'People',
+                'image' => 'http://local.crm/images/icons/icons8/16px/icons8-people-16.png',
+                'onclick' => '',
+            ],
+            [
+                'name' => 'Quotes',
+                'image' => 'http://local.crm/images/icons/png/16x16/DocumentExport.png',
+                'onclick' => '',
+            ],
+            [
                 'name' => 'Accounts',
                 'image' => 'http://local.crm/images/icons/png/16x16/Account.png',
                 'onclick' => '',
@@ -32,16 +42,6 @@ class UtilController extends AbstractController
             [
                 'name' => 'Jobs',
                 'image' => 'http://local.crm/images/icons/png/16x16/Gear.png',
-                'onclick' => '',
-            ],
-            [
-                'name' => 'People',
-                'image' => 'http://local.crm/images/icons/icons8/16px/icons8-people-16.png',
-                'onclick' => '',
-            ],
-            [
-                'name' => 'Tasks',
-                'image' => 'http://local.crm/images/icons/png/16x16/TaskBoard.png',
                 'onclick' => '',
             ],
             [
@@ -75,6 +75,9 @@ class UtilController extends AbstractController
         $objects = [
             [
                 'id' => 'pnlLeads',
+            ],
+            [
+                'id' => 'pnlQuotes',
             ],
             [
                 'id' => 'pnlAccounts',
@@ -166,12 +169,13 @@ class UtilController extends AbstractController
                 'onclick'=>'alert("hi");',
             ],
             [
+                'name'=>'Quotes',
+                'image'=>'http://local.crm/images/icons/png/128x128/DocumentExport.png',
+                'onclick'=>'alert("hi");',
+            ],
+            [
                 'name'=>'Jobs',
                 'image'=>'http://local.crm/images/icons/png/128x128/Gear.png',
-                'onclick'=>'alert("hi");',
-            ],[
-                'name'=>'Services',
-                'image'=>'http://local.crm/images/icons/png/128x128/Execute.png',
                 'onclick'=>'alert("hi");',
             ],
             [

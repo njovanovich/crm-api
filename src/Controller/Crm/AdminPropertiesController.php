@@ -3,6 +3,7 @@
 namespace App\Controller\Crm;
 
 use App\Entity\Crm\AdminProperties;
+use App\Controller\BaseController;
 use App\Form\Crm\AdminPropertiesType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -12,12 +12,8 @@ class AdminPropertiesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('created')
-            ->add('updated')
             ->add('name')
             ->add('value')
-            ->add('createdBy')
-            ->add('updatedBy')
         ;
     }
 

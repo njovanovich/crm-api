@@ -16,45 +16,56 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LeadController extends AbstractController
 {
+//    /**
+//     * @Route("/", name="crm_lead_index", methods={"GET"})
+//     */
+//    public function index(Request $request): Response
+//    {
+//        $conn = $this->getDoctrine()->getConnection();
+//
+//        $page = $request->get('page') ?? 1;
+//        $limit = (int)($request->get('limit') ?? 10);
+//        $start = (int)(($page-1) * $limit);
+//        $orderby = $request->get('sort') ?? 'id ASC';
+//        $sql = "SELECT *, leads.id as id, b.name as business_name,
+//                    IF(p.last_name!='',concat(p.last_name,', ',p.first_name),p.first_name) as person_name,
+//                    p.email as person_email, p.phone as person_phone
+//                    FROM leads LEFT JOIN businesses b on business=b.id
+//                        LEFT JOIN people p on person=p.id
+//             ORDER BY :orderby
+//             LIMIT $start, $limit";
+//
+//        $stmt = $conn->prepare($sql);
+//        $stmt->execute(['orderby' => $orderby]);
+//        $objects = array();
+//        $objects['data'] = $stmt->fetchAll();;
+//
+//        $sql = "SELECT COUNT(*) as count FROM leads ";
+//
+//        $stmt = $conn->prepare($sql);
+//        $stmt->execute();
+//
+//        $countResult = $stmt->fetch();
+//        $count = $countResult['count'];
+//        $objects['total'] = $count;
+//        $objects['success'] = true;
+//
+//        $response = new JsonResponse();
+//        $response->setData($objects);
+//
+//        $response->headers->set('Content-Type', 'application/json');
+//        return $response;
+//    }
+
+
     /**
      * @Route("/", name="crm_lead_index", methods={"GET"})
      */
     public function index(Request $request): Response
     {
-        $conn = $this->getDoctrine()->getConnection();
-
-        $page = $request->get('page') ?? 1;
-        $limit = (int)($request->get('limit') ?? 10);
-        $start = (int)(($page-1) * $limit);
-        $orderby = $request->get('sort') ?? 'id ASC';
-        $sql = "SELECT *, leads.id as id, b.name as business_name, 
-                    IF(p.last_name!='',concat(p.last_name,', ',p.first_name),p.first_name) as person_name,
-                    p.email as person_email, p.phone as person_phone
-                    FROM leads LEFT JOIN businesses b on business=b.id
-                        LEFT JOIN people p on person=p.id
-             ORDER BY :orderby
-             LIMIT $start, $limit";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['orderby' => $orderby]);
-        $objects = array();
-        $objects['data'] = $stmt->fetchAll();;
-
-        $sql = "SELECT COUNT(*) as count FROM leads ";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-
-        $countResult = $stmt->fetch();
-        $count = $countResult['count'];
-        $objects['total'] = $count;
-        $objects['success'] = true;
-
-        $response = new JsonResponse();
-        $response->setData($objects);
-
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->index(Lead::class, $request->get('start'));
     }
 
     /**

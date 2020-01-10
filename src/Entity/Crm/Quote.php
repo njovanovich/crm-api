@@ -32,58 +32,58 @@ class Quote
      */
     protected $id;
 
-/**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(type="datetime",columnDefinition="TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-     */
-    protected $updated;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    protected $createdBy;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
-     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")*
-     */
-    protected $updatedBy;
-
-    /**
-     * @ORM\Column(name="quote_number",length=40)
-     */
-    private $quoteNumber;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
-     */
-    private $contact;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Business")
-     * @ORM\JoinColumn(name="business", referencedColumnName="id")
-     */
-    private $business;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $quoteLines;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
-     * @ORM\JoinTable(name="quote_notes",
-     *      joinColumns={@ORM\JoinColumn(name="quote_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id", unique=true)}
-     *      )
-     */
-    private $notes;
+//    /**
+//     * @ORM\Column(type="datetime")
+//     * @Gedmo\Timestampable(on="create")
+//     */
+//    protected $created;
+//
+//    /**
+//     * @ORM\Column(type="datetime",columnDefinition="TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+//     */
+//    protected $updated;
+//
+//    /**
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
+//     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+//     */
+//    protected $createdBy;
+//
+//    /**
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
+//     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")*
+//     */
+//    protected $updatedBy;
+//
+//    /**
+//     * @ORM\Column(name="quote_number",length=40)
+//     */
+//    private $quoteNumber;
+//
+//    /**
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+//     * @ORM\JoinColumn(name="person", referencedColumnName="id")
+//     */
+//    private $person;
+//
+//    /**
+//     * @ORM\ManyToOne(targetEntity="Business")
+//     * @ORM\JoinColumn(name="business", referencedColumnName="id")
+//     */
+//    private $business;
+//
+//    /**
+//     * @ORM\Column(type="text")
+//     */
+//    private $quoteLines;
+//
+//    /**
+//     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
+//     * @ORM\JoinTable(name="quote_notes",
+//     *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id")},
+//     *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true)}
+//     *      )
+//     */
+//    private $notes;
 
 }

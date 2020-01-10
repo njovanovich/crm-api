@@ -51,11 +51,7 @@ class Event
     //private $location;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Person")
-     * @ORM\JoinTable(name="person_events",
-     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="Person", inversedBy="events", cascade={"all"})
      */
     private $people;
 
@@ -69,6 +65,22 @@ class Event
      * @ORM\Column()
      */
     private $type;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return mixed

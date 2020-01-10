@@ -82,14 +82,22 @@ class Person
     private $phone;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", fetch="EAGER")
+     * @ORM\JoinTable(name="person_events",
+     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id")}
+     *      )
+     */
+    private $events;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note",fetch="EAGER")
      * @ORM\JoinTable(name="person_notes",
-     *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true)}
      *      )
      */
     private $notes;
-
 
     /**
      * Person constructor.
@@ -290,8 +298,32 @@ class Person
         $this->notes = $notes;
     }
 
-
     public function addNote($note){
         $this->notes[] = $note;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events): void
+    {
+        $this->events = $events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function addEvent($events): void
+    {
+        $this->events[] = $events;
+    }
+
 }

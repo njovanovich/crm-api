@@ -15,7 +15,9 @@ class EventType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('dateTime', DateTimeType::class)
+            ->add('dateTime', DateTimeType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('duration')
             ->add('status')
             ->add('type')

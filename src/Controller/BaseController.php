@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Person;
+use App\Entity\Crm\Quote;
 
 class BaseController extends AbstractController
 {
@@ -25,27 +26,28 @@ class BaseController extends AbstractController
     {
     }
 
-    public function index($class, int $start=0, int $pageSize=10, $where=[]): Response
+    public function index($class, int $start=0, int $pageSize=12, $where=[], $orderBy=null): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT c FROM $class c ";
-        if ($where) {
-            $dql .= "WHERE $where ";
-        }
+        $serializer = $this->container->get('serializer');
 
-        $query = $em->createQuery($dql);
-        if(count($where)){
-            foreach ($where as $k=>$v) {
-                $query->setParameter($k, $v);
-            }
-        }
+        $repo = $em->getRepository($class);
 
-        $query->setFirstResult($start)
-                ->setMaxResults($pageSize);
-        $objects = $query->getArrayResult();
+
+        $objects = $repo->findBy($where, $orderBy, $pageSize, $start);
+
+
+
+        foreach($objects as $k=>$object){
+            $serializedObject = $serializer->serialize($object, 'json');
+            $objects[$k] = json_decode($serializedObject);
+        }
 
         // get total
-        $dql = "SELECT count(c) as count FROM $class c ";
+        $dql = "SELECT count(c) as count FROM $class c";
+        if ($where){
+            $dql .= " WHERE $where";
+        }
         $query = $em->createQuery($dql);
         $countResult = $query->getArrayResult();
         $count = $countResult[0]['count'];
@@ -106,6 +108,7 @@ class BaseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($object);
             $this->getDoctrine()->getManager()->flush();
 
             return new JsonResponse(['success'=>true]);

@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity()
  * @ORM\Table("leads")
  */
-class Lead extends BaseObject
+class Lead 
 {
     /**
      * @ORM\Id
@@ -94,32 +94,6 @@ class Lead extends BaseObject
      * @ORM\JoinColumn(name="assigned_to", referencedColumnName="id")
      */
     private $assignedTo;
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
-     * @ORM\JoinTable(name="lead_notes",
-     *      joinColumns={@ORM\JoinColumn(name="lead_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id", unique=true)}
-     *      )
-     */
-    private $notes;
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
-    {
-        $this->name = $name;
-    }
 
     /**
      * @return mixed
@@ -271,22 +245,6 @@ class Lead extends BaseObject
     public function setAssignedTo($assignedTo): void
     {
         $this->assignedTo = $assignedTo;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNotes()
-    {
-        return $this->notes;
-    }
-
-    /**
-     * @param mixed $notes
-     */
-    public function setNotes($notes): void
-    {
-        $this->notes = $notes;
     }
 
     /**
