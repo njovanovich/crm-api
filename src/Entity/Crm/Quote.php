@@ -30,7 +30,7 @@ class Quote
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
 //    /**
 //     * @ORM\Column(type="datetime")

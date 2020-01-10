@@ -33,15 +33,15 @@ class BaseController extends AbstractController
 
         $repo = $em->getRepository($class);
 
-
         $objects = $repo->findBy($where, $orderBy, $pageSize, $start);
-
-
 
         foreach($objects as $k=>$object){
             $serializedObject = $serializer->serialize($object, 'json');
+            echo($serializedObject);
             $objects[$k] = json_decode($serializedObject);
         }
+
+        print_r($objects);die();
 
         // get total
         $dql = "SELECT count(c) as count FROM $class c";
