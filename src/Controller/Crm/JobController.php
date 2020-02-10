@@ -4,6 +4,7 @@ namespace App\Controller\Crm;
 
 use App\Entity\Crm\Job;
 use App\Form\Crm\JobType;
+use App\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

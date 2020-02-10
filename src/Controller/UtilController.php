@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/util")
@@ -206,14 +207,39 @@ class UtilController extends AbstractController
     }
 
     /**
+     * @Route("/csrf", name="get_csrf", methods={"GET"})
+     */
+    public function getCsrf(): Response
+    {
+
+        $session = new Session();
+        $session->start();
+
+        $csrf = $session->get('csrf');
+        if (!$csrf) {
+            $csrf = bin2hex(random_bytes(32));
+            $session->set('csrf', $csrf);
+        }
+        $csrf = $session->get('csrf');
+
+        $response = new JsonResponse();
+        $object = [
+            "csrf" => $csrf,
+            "success" => true,
+        ];
+        $response->setData();
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
      * @Route("/login", name="login_user", methods={"GET"})
      */
     public function login(): Response
     {
 
         $response = new JsonResponse();
-        //$response->setData($objects);
-
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }

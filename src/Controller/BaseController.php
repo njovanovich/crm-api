@@ -15,33 +15,44 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
-use App\Entity\Person;
-use App\Entity\Crm\Quote;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class BaseController extends AbstractController
 {
 
-    public function __construct()
+    private $session;
+    private $csrfToken;
+    private $request;
+
+    public function __construct(/*Request $request*/)
     {
+        $this->session = new Session();
+        //$this->session->start();
+        $this->csrfToken = $this->session->get('csrf');
+        //$this->request = $request;
     }
 
     public function index($class, int $start=0, int $pageSize=12, $where=[], $orderBy=null): Response
     {
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->container->get('serializer');
-
         $repo = $em->getRepository($class);
 
-        $objects = $repo->findBy($where, $orderBy, $pageSize, $start);
-
-        foreach($objects as $k=>$object){
-            $serializedObject = $serializer->serialize($object, 'json');
-            echo($serializedObject);
-            $objects[$k] = json_decode($serializedObject);
+        // hack for serializer
+        if ($class != "App\\Entity\\Crm\\Quote")  {
+            $objects = $repo->findBy($where, $orderBy, $pageSize, $start);
+        } else {
+            $dql = "SELECT c, b, p FROM $class c 
+                             JOIN c.business b
+                             JOIN c.person p";
+            if ($where){
+                $dql .= " WHERE $where";
+            }
+            $query = $em->createQuery($dql);
+            $objects = $query->getArrayResult();
         }
-
-        print_r($objects);die();
+        $serializedObject = $serializer->serialize($objects, 'json');
+        $objects = json_decode($serializedObject);
 
         // get total
         $dql = "SELECT count(c) as count FROM $class c";

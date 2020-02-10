@@ -87,6 +87,9 @@ class NoteController extends AbstractController
                 case "event":
                     $class = "App\Entity\Event";
                     break;
+                case "quote":
+                    $class = "App\Entity\Crm\Quote";
+                    break;
                 case "call":
                     $class = "App\Entity\Crm\Call";
                     break;
