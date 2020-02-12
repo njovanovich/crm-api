@@ -127,9 +127,9 @@ class Business
     /**
      * @ORM\ManyToMany(targetEntity="Note")
      * @ORM\JoinTable(name="business_notes",
-     *      joinColumns={@ORM\JoinColumn(name="business_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id")}
-     *      )
+     *     joinColumns={@ORM\JoinColumn(name="business_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id",onDelete="CASCADE")}
+     * )
      */
     private $notes;
 
@@ -437,5 +437,8 @@ class Business
         $this->notes = $notes;
     }
 
-
+    public function addNote($note)
+    {
+        $this->notes[] = $note;
+    }
 }

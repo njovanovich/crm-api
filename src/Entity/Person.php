@@ -66,6 +66,8 @@ class Person
      */
     private $firstName;
 
+    private $name;
+
     /**
      * @ORM\Column(length=10)
      */
@@ -324,6 +326,22 @@ class Person
     public function addEvent($events): void
     {
         $this->events[] = $events;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->lastName . ", " . $this->firstName;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
     }
 
 }

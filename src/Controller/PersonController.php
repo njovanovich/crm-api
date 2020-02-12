@@ -87,4 +87,56 @@ class PersonController extends AbstractController
         return new JsonResponse(["success"=>true]);
     }
 
+    /**
+     * @Route("/search/{searchTerm}", name="crm_person_search", methods={"GET"})
+     */
+    public function search(Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $qb = $entityManager->createQueryBuilder();
+        $searchTerm = $request->get('searchTerm');
+
+        $qb->select('p');
+
+        // build from & joins
+        $qb->from(Person::class, 'p');
+
+        $fields = ['firstName','lastName'];
+
+        foreach ($fields as $field) {
+            $qb->orWhere("p.$field LIKE :" . $field);
+            $qb->setParameter($field, $searchTerm.'%');
+        }
+
+        $qb->orderBy("p.lastName", "ASC");
+
+//        if (count($limitInfo)) {
+//            $offset = $limitInfo['offset'];
+//            $limit = $limitInfo['limit'];
+//            $qb->setFirstResult( $offset )
+//                ->setMaxResults( $limit );
+//        }
+
+        // get the data
+        $query = $qb->getQuery();
+        $data = $query->getArrayResult();
+
+        foreach($data as $k=>$person){
+            if ($person["lastName"]) {
+                $name = $person["lastName"] . ", " . $person["firstName"];
+            } else {
+                $name = $person["firstName"];
+            }
+
+            $data[$k]["name"] = $name;
+        }
+
+        $outArray = [
+            'success'=>true,
+            'data' => $data
+        ];
+        return new JsonResponse($outArray);
+    }
+
+
 }

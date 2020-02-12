@@ -96,6 +96,15 @@ class Lead
     private $assignedTo;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Note")
+     * @ORM\JoinTable(name="lead_notes",
+     *     joinColumns={@ORM\JoinColumn(name="lead_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id",onDelete="CASCADE")}
+     * )
+     */
+    private $notes;
+
+    /**
      * @return mixed
      */
     public function getPerson()
@@ -301,6 +310,30 @@ class Lead
     public function setUpdatedBy($updatedBy): void
     {
         $this->updatedBy = $updatedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param mixed $notes
+     */
+    public function setNotes($notes): void
+    {
+        $this->notes = $notes;
+    }
+
+    /**
+     *
+     */
+    public function addNote($note)
+    {
+        $this->notes[] = $note;
     }
 
 }

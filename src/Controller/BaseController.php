@@ -11,7 +11,9 @@
 
 namespace App\Controller;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -135,6 +137,65 @@ class BaseController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['success'=>true]);
+    }
+
+    public function complexLike($classNames, $searchBy, $joinInfo=[], $limitInfo=[], $orderBy=[]){
+        $entityManager = $this->getDoctrine()->getManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        $searchByKeys = array_keys($searchBy);
+        $searchByValues = array_values($searchBy);
+
+        $classNameKeys = array_keys($classNames);
+        $mainClassKey =  $classNameKeys[0][0];
+        $qb->select($classNameKeys);
+
+        // build from & joins
+        $counter = 0;
+        foreach ($classNames as $key=>$className) {
+            if (!$counter){
+                $qb->from($className, $key);
+            } else {
+                if (!$joinInfo[$key]) {
+                    throw new \Exception('Cannot find join info.');
+                }
+                $qb->leftJoin($className, $key, $joinInfo[$key]['conditionType'], $joinInfo[$key]['condition']);
+            }
+            $counter++;
+        }
+
+        foreach ($searchByKeys as $searchByKey) {
+            $searchByKey2 = explode('.', $searchByKey)[1];
+            $qb->orWhere($searchByKey.' LIKE :' . $searchByKey2);
+        }
+        for ($i = 0; $i < count($searchByKeys); $i++) {
+            $searchByKey = $searchByKeys[0];
+            $searchByKey = explode('.', $searchByKey)[1];
+            $searchByValue = $searchByValues[0];
+            $qb->setParameter($searchByKey, $searchByValue.'%');
+        }
+
+        if (count($orderBy)) {
+            foreach ($orderBy as $key=>$dir) {
+                $qb->orderBy($key, $dir);
+            }
+        }
+        if (count($limitInfo)) {
+            $offset = $limitInfo['offset'];
+            $limit = $limitInfo['limit'];
+            $qb->setFirstResult( $offset )
+                ->setMaxResults( $limit );
+        }
+
+        // get the data
+        $query = $qb->getQuery();
+        $data = $query->getArrayResult();
+
+        $outArray = [
+            'success'=>true,
+            'data' => $data
+        ];
+        return new JsonResponse($outArray);
     }
 
 

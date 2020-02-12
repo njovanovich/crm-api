@@ -73,6 +73,8 @@ class NoteController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
 
+        $success = FALSE;
+
         $note = new Note();
         $contents = $request->get('contents');
         $note->setContents($contents);
@@ -84,6 +86,9 @@ class NoteController extends AbstractController
                 case "person":
                     $class = "App\Entity\Person";
                     break;
+                case "business":
+                    $class = "App\Entity\Crm\Business";
+                    break;
                 case "event":
                     $class = "App\Entity\Event";
                     break;
@@ -93,6 +98,9 @@ class NoteController extends AbstractController
                 case "call":
                     $class = "App\Entity\Crm\Call";
                     break;
+                case "lead":
+                    $class = "App\Entity\Crm\Lead";
+                    break;
             }
             if ($class) {
                 $repo = $this->getDoctrine()->getRepository($class);
@@ -101,6 +109,7 @@ class NoteController extends AbstractController
                     $object->addNote($note);
                     $entityManager->persist($object);
                 }
+                $success = TRUE;
             }
         }catch(Exception $ex){}
 
@@ -108,17 +117,16 @@ class NoteController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse([
-            'success'=>true
+            'success'=>$success
         ]);
     }
 
     /**
-     * @Route("/getNotes/{type}/{id}", name="crm_note_delete", methods={"POST","GET"})
+     * @Route("/getNotes/{type}/{id}", name="crm_get_notes_type", methods={"GET"})
      */
     public function getNotes(Request $request): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-
         $type = $request->get('type');
         $id = $request->get('id');
         $notes = [];
@@ -133,6 +141,12 @@ class NoteController extends AbstractController
                     break;
                 case "call":
                     $class = "App\Entity\Crm\Call";
+                    break;
+                case "business":
+                    $class = "App\Entity\Crm\Business";
+                    break;
+                case "lead":
+                    $class = "App\Entity\Crm\Lead";
                     break;
             }
             if ($class) {
@@ -155,5 +169,60 @@ class NoteController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/search/{id}/{type}/{phrase}", name="crm_search_notes", methods={"GET"})
+     */
+    public function searchNotes(Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
 
+        $success = false;
+        $type = $request->get('type');
+        $id = $request->get('id');
+        $searchTerm = $request->get('phrase');
+        $outNotes = [];
+        try{
+            $class = "";
+            switch($type){
+                case "person":
+                    $class = "App\Entity\Person";
+                    break;
+                case "event":
+                    $class = "App\Entity\Event";
+                    break;
+                case "call":
+                    $class = "App\Entity\Crm\Call";
+                    break;
+                case "lead":
+                    $class = "App\Entity\Crm\Lead";
+                    break;
+                case "business":
+                    $class = "App\Entity\Crm\Business";
+                    break;
+            }
+            if ($class) {
+                $repo = $this->getDoctrine()->getRepository($class);
+                $object = $repo->find($id);
+                $notes = $object->getNotes()->getValues();
+                $serializer = $this->container->get('serializer');
+                foreach ($notes as $k=>$note) {
+                    $contents = $note->getContents();
+                    if (strpos($contents, $searchTerm) !== FALSE) {
+                        $serializedObject = $serializer->serialize($note, 'json');
+                        $note = json_decode($serializedObject);
+                        $outNotes[] = $note;
+                    } else {
+                        unset($notes[$k]);
+                    }
+                }
+                $success = TRUE;
+            }
+        }catch(Exception $ex){}
+
+        return new JsonResponse([
+            'data' => $outNotes,
+            'success'=>$success
+        ]);
+
+    }
 }
