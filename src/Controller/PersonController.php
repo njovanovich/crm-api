@@ -6,6 +6,7 @@ use App\Entity\Person;
 use App\Entity\Crm\Note;
 use App\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +20,11 @@ class PersonController extends AbstractController
     /**
      * @Route("/", name="person_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->index(Person::class);
     }
 
@@ -138,5 +140,46 @@ class PersonController extends AbstractController
         return new JsonResponse($outArray);
     }
 
+    /**
+     * @Route("/create/{name}", name="crm_person_create", methods={"POST"})
+     */
+    public function create(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $serializer = $this->container->get('serializer');
+
+        $success = false;
+        $data = [];
+
+        try{
+            $name = $request->get('name');
+            $names = explode(' ', $name);
+            $firstName = implode(" ",array_slice ($names, 0, count($names) - 1));
+            $lastName = $names[count($names) - 1];
+
+            if (strpos(' ', $name) === FALSE) {
+                $firstName = $name;
+                $lastName = "";
+            }
+
+            $person = new Person();
+            $person->setFirstName($firstName);
+            $person->setLastName($lastName);
+
+            $em->persist($person);
+            $em->flush();
+
+            $serializedObject = $serializer->serialize($person, 'json');
+            $data = json_decode($serializedObject);
+
+            $success = TRUE;
+        }catch(Exception $ex){}
+
+        $outArray = [
+            'success'=>$success,
+            'data' => $data
+        ];
+        return new JsonResponse($outArray);
+    }
 
 }

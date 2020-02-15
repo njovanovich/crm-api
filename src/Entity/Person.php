@@ -69,17 +69,17 @@ class Person
     private $name;
 
     /**
-     * @ORM\Column(length=10)
+     * @ORM\Column(length=10,nullable=true)
      */
     private $gender;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(length=255,name="phone")
+     * @ORM\Column(length=255,name="phone",nullable=true)
      */
     private $phone;
 
@@ -97,7 +97,7 @@ class Person
      * @ORM\JoinTable(name="person_notes",
      *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true)}
-     *      )
+     * )
      */
     private $notes;
 
@@ -333,7 +333,7 @@ class Person
      */
     public function getName()
     {
-        return $this->lastName . ", " . $this->firstName;
+        return $this->firstName . " " . $this->lastName;
     }
 
     /**

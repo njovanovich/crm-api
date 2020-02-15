@@ -85,7 +85,7 @@ class Lead
     private $referredBy;
 
     /**
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      */
     private $campaign;
 

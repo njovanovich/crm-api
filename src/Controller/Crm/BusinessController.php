@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @Route("/crm/business")
+ * @Route("/business")
  */
 class BusinessController extends AbstractController
 {
@@ -25,11 +25,8 @@ class BusinessController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
-
-        $limit = (int)($request->get('limit') ?? 12);
-        $start = (int)($request->get('start') ?? 0);
-
-        return $base->index(Business::class, $start, $limit);
+        $base->setRequest($request);
+        return $base->index(Business::class);
     }
 
     /**
@@ -151,6 +148,38 @@ class BusinessController extends AbstractController
 
         $outArray = [
             'success'=>true,
+            'data' => $data
+        ];
+        return new JsonResponse($outArray);
+    }
+
+    /**
+    * @Route("/create/{name}", name="crm_business_create", methods={"POST"})
+    */
+    public function create(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $serializer = $this->container->get('serializer');
+
+        $success = false;
+        $data = [];
+
+        try{
+            $name = $request->get('name');
+
+            $business = new Business();
+            $business->setName($name);
+
+            $em->persist($business);
+            $em->flush();
+
+            $serializedObject = $serializer->serialize($business, 'json');
+            $data = json_decode($serializedObject);
+
+        }catch(Exception $ex){}
+
+        $outArray = [
+            'success'=>$success,
             'data' => $data
         ];
         return new JsonResponse($outArray);

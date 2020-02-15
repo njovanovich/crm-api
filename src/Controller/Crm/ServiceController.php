@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/crm/service")
+ * @Route("/service")
  */
 class ServiceController extends AbstractController
 {

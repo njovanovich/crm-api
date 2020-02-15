@@ -11,13 +11,13 @@
 
 namespace App\Controller;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Example;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\Mapping as ORM;
 
 class BaseController extends AbstractController
 {
@@ -34,32 +34,127 @@ class BaseController extends AbstractController
         //$this->request = $request;
     }
 
-    public function index($class, int $start=0, int $pageSize=12, $where=[], $orderBy=null): Response
+    public function setRequest($request){
+        $this->request = $request;
+    }
+
+    public function index($class): Response
     {
+        $request = $this->request;
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->container->get('serializer');
-        $repo = $em->getRepository($class);
 
-        // hack for serializer
-        if ($class != "App\\Entity\\Crm\\Quote")  {
-            $objects = $repo->findBy($where, $orderBy, $pageSize, $start);
-        } else {
-            $dql = "SELECT c, b, p FROM $class c 
-                             JOIN c.business b
-                             JOIN c.person p";
-            if ($where){
-                $dql .= " WHERE $where";
+        // get pagination
+        if ($request) {
+            $filter = json_decode($request->get('filter'), 1);
+
+            $start = $request->get('start') ?: 0;
+            $pageSize = $request->get('limit') ?: 12;
+
+            $where = [];
+            if ($filter) {
+                foreach ($filter as $f) {
+                    $where[$f['property']] = $f['value'];
+                }
+
             }
-            $query = $em->createQuery($dql);
-            $objects = $query->getArrayResult();
+
+            $sort = json_decode($request->get('sort'), 1);
+            if ($sort) {
+                $orderBy = [
+                    $sort[0]["property"] => $sort[0]["direction"]
+                ];
+            } else {
+                $orderBy = [];
+            }
+        } else {
+            $start = 0;
+            $pageSize = 12;
+            $where = [];
+            $orderBy = [];
         }
+
+        $reflectionClass = new \ReflectionClass($class);
+        $properties = $reflectionClass->getProperties ();
+        $reader = new AnnotationReader();
+        $propertyAnnotations = [];
+        foreach ($properties as $property) {
+            $annotations = $reader->getPropertyAnnotations(
+                $property
+            );
+            if ($annotations) {
+                $propertyAnnotations[$property->getName()] = $annotations;
+            }
+        }
+
+        // create dql
+        $firstSelector = "a";
+        $selectorIndex = 0;
+        $joinDql = "";
+        $extraSelectors = [];
+        $columns = [];
+        foreach ($propertyAnnotations as $property=>$annotations) {
+            $isJoin = FALSE;
+            foreach ($annotations as $annotation) {
+                switch (get_class($annotation)) {
+                    case @ORM\ManyToMany::class:
+                        $isJoin = TRUE;
+                        break;
+                    case @ORM\ManyToOne::class:
+                        $isJoin = TRUE;
+                        break;
+                    case @ORM\Column::class:
+                        $columns[$property] = $annotation;
+                        break;
+                }
+            }
+            if ($isJoin) {
+                $extraSelector = chr(98 + $selectorIndex++);
+                $joinDql .= " LEFT JOIN $firstSelector.$property $extraSelector ";
+                $extraSelectors[] = $extraSelector;
+            }
+
+        }
+        $select = $firstSelector. "," . implode(',', $extraSelectors);
+        $dql = "SELECT $select FROM $class AS $firstSelector ";
+        $dql .= $joinDql;
+
+        // build the where clause
+        $whereSql = "";
+        if ($where){
+            $whereKeys = array_keys($where);
+            $whereValues = array_values($where);
+            $whereSqlArray = [];
+            if ($whereKeys[0] == "all"){
+                foreach($columns as $property=>$column) {
+                    if ($column->type == "string") {
+                        $whereSqlArray[] = " $firstSelector.$property LIKE '" . $whereValues[0] . "%'";;
+                    }
+                }
+                $whereSql = implode(' OR ', $whereSqlArray);
+            } else {
+                foreach ($where as $key=>$value) {
+                    $whereSqlArray[] = " $firstSelector." .$key . " LIKE '" . $value . "%'";
+                }
+                $whereSql = implode(' AND ', $whereSqlArray);
+            }
+
+            $dql .= " WHERE " . $whereSql;
+        }
+        if (count($orderBy)) {
+            $dql .= " ORDER BY " . $sort[0]["property"] . " " . $sort[0]["direction"];
+        }
+
+        $query = $em->createQuery($dql);
+        $objects = $query->getArrayResult();
+
         $serializedObject = $serializer->serialize($objects, 'json');
         $objects = json_decode($serializedObject);
 
         // get total
-        $dql = "SELECT count(c) as count FROM $class c";
-        if ($where){
-            $dql .= " WHERE $where";
+        $dql = "SELECT count($firstSelector) as count FROM $class $firstSelector";
+        if ($whereSql){
+            $dql .= " WHERE $whereSql";
         }
         $query = $em->createQuery($dql);
         $countResult = $query->getArrayResult();
@@ -127,7 +222,7 @@ class BaseController extends AbstractController
             return new JsonResponse(['success'=>true]);
         }
 
-        return new JsonResponse(['success'=>false]);
+        return new JsonResponse(['success'=>false], 400);
     }
 
     public function delete(Request $request, $object, $token=''): Response

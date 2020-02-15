@@ -75,10 +75,13 @@ class UtilController extends AbstractController
     {
         $objects = [
             [
-                'id' => 'pnlLeads',
+                'id' => 'pnlLead',
             ],
             [
-                'id' => 'pnlQuotes',
+                'id' => 'pnlPerson',
+            ],
+            [
+                'id' => 'pnlQuote',
             ],
             [
                 'id' => 'pnlAccounts',

@@ -3,6 +3,7 @@
 namespace App\Controller\Crm;
 
 use App\Entity\Crm\Lead;
+use App\Entity\Person;
 use App\Form\Crm\LeadType;
 use App\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/crm/lead")
+ * @Route("/lead")
  */
 class LeadController extends AbstractController
 {
@@ -57,7 +58,6 @@ class LeadController extends AbstractController
 //        return $response;
 //    }
 
-
     /**
      * @Route("/", name="crm_lead_index", methods={"GET"})
      */
@@ -75,6 +75,29 @@ class LeadController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $person = $request->get("person");
+        if (!is_numeric($person)) {
+            $name = $request->get('name');
+            $names = explode(' ', $name);
+            $firstName = implode(" ",array_slice ($names, 0, count($names) - 2));
+            $lastName = $names[count($names) - 1];
+
+            $person = new Person();
+            $person->setFirstName($firstName);
+            $person->setLastName($lastName);
+
+            $em->persist($person);
+            $em->flush();
+
+            $request->setParameter('person', $person->getId());
+        }
+        $business = $request->get("business");
+
+
+
         return $base->new($request, Lead::class, LeadType::class);
     }
 
@@ -95,6 +118,24 @@ class LeadController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $person = $request->get("person");
+        if (!is_numeric($person)) {
+            $name = $person;
+            $names = explode(' ', $name);
+            $firstName = implode(" ",array_slice ($names, 0, count($names) - 2));
+            $lastName = $names[count($names) - 1];
+
+            $person = new Person();
+            $person->setFirstName($firstName);
+            $person->setLastName($lastName);
+
+            $em->persist($person);
+            $em->flush();
+        }
+
         return $base->edit($request, $lead, LeadType::class);
     }
 
