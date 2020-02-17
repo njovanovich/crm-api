@@ -87,7 +87,7 @@ class Person
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", fetch="EAGER")
      * @ORM\JoinTable(name="person_events",
      *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")}
      *      )
      */
     private $events;
@@ -96,7 +96,7 @@ class Person
      * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note",fetch="EAGER")
      * @ORM\JoinTable(name="person_notes",
      *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      * )
      */
     private $notes;

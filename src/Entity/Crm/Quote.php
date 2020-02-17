@@ -86,7 +86,7 @@ class Quote
      * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
      * @ORM\JoinTable(name="quote_notes",
      *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true,onDelete="CASCADE")}
      *      )
      */
     private $notes;

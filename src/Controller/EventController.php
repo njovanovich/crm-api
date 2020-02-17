@@ -2,15 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Crm\Util;
 use App\Entity\Event;
 use App\Entity\Person;
-use App\Form\AddressType;
 use App\Form\EventType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * @Route("/event")
@@ -58,31 +64,45 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/person/{id}", name="event_by_person", methods={"GET"})
+     * @Route("/fetchby/{type}/{id}", name="event_by_person", methods={"GET"})
      */
-    public function eventsByPerson(Request $request): Response
+    public function eventsByType(Request $request): Response
     {
+        $success = FALSE;
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Person::class);
-        $serializer = $this->container->get('serializer');
+        $type = $request->get('type');
+        $className = Util::getClassName($type);
+        $repo = $em->getRepository($className);
 
-        $person = $repo->find($request->get('id'));
+        $encoder = new JsonEncoder();
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                return $object->getId();
+            },
+        ];
+        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([$normalizer], [$encoder]);
 
-        $objects = array();
-        foreach ($person->getEvents() as $object) {
-            $serializedObject = $serializer->serialize($object, 'json');
-            $objects[] = json_decode($serializedObject);
-        }
+        $typeObject = $repo->find($request->get('id'));
+
+        try{
+            $objects = array();
+            foreach ($typeObject->getEvents() as $object) {
+                $serializedObject = $serializer->serialize($object, 'json');
+                $objects[] = json_decode($serializedObject);
+            }
+            $success = TRUE;
+        }catch(Exception $ex){}
 
         $returnArray = [
             "data" => $objects,
-            "success" => true
+            "success" => $success
         ];
         return new JsonResponse($returnArray);
     }
 
     /**
-     * @Route("/new/person/{id}", name="event_new", methods={"GET","POST"})
+     * @Route("/new/{type}/{id}", name="event_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {

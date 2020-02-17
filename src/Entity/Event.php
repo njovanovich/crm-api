@@ -30,6 +30,29 @@ class Event
     protected $id;
 
     /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type="datetime",columnDefinition="TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+     */
+    protected $updated;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     */
+    protected $createdBy;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")*
+     */
+    protected $updatedBy;
+
+    /**
      * @ORM\Column(length=255)
      */
     private $description;
@@ -51,9 +74,15 @@ class Event
     //private $location;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Person",fetch="EAGER")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
+     */
+    private $person;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Person", inversedBy="events", cascade={"all"})
      */
-    private $people;
+    //private $people;
 
     /**
      * Duration in minutes
@@ -133,30 +162,6 @@ class Event
     /**
      * @return mixed
      */
-    public function getPeople()
-    {
-        return $this->people;
-    }
-
-    /**
-     * @param mixed $people
-     */
-    public function setPeople($people): void
-    {
-        $this->people = $people;
-    }
-
-    /**
-     * @param mixed $people
-     */
-    public function addPerson($people): void
-    {
-        $this->people[] = $people;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getDuration()
     {
         return $this->duration;
@@ -185,6 +190,87 @@ class Event
     {
         $this->type = $type;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param mixed $updated
+     */
+    public function setUpdated($updated): void
+    {
+        $this->updated = $updated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy($createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param mixed $updatedBy
+     */
+    public function setUpdatedBy($updatedBy): void
+    {
+        $this->updatedBy = $updatedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param mixed $person
+     */
+    public function setPerson($person): void
+    {
+        $this->person = $person;
+    }
+
 
 
 }

@@ -145,6 +145,9 @@ class NoteController extends AbstractController
                 case "business":
                     $class = "App\Entity\Crm\Business";
                     break;
+                case "quote":
+                    $class = "App\Entity\Crm\Quote";
+                    break;
                 case "lead":
                     $class = "App\Entity\Crm\Lead";
                     break;
@@ -195,6 +198,9 @@ class NoteController extends AbstractController
                     break;
                 case "lead":
                     $class = "App\Entity\Crm\Lead";
+                    break;
+                case "quote":
+                    $class = "App\Entity\Crm\Quote";
                     break;
                 case "business":
                     $class = "App\Entity\Crm\Business";
