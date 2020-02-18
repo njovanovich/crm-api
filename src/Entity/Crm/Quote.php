@@ -83,6 +83,15 @@ class Quote
     private $total;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", fetch="EAGER")
+     * @ORM\JoinTable(name="quote_events",
+     *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")}
+     *      )
+     */
+    private $events;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
      * @ORM\JoinTable(name="quote_notes",
      *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id")},
@@ -274,5 +283,30 @@ class Quote
     {
         $this->notes[] = $note;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events): void
+    {
+        $this->events = $events;
+    }
+
+    /**
+     * @param $event
+     */
+    public function addEvent($event): void
+    {
+        $this->events[] = $event;
+    }
+
 
 }

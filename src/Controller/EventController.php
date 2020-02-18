@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Crm\Util;
+use App\Entity\Crm\Lead;
 use App\Entity\Event;
 use App\Entity\Person;
 use App\Form\EventType;
@@ -69,10 +70,52 @@ class EventController extends AbstractController
     public function eventsByType(Request $request): Response
     {
         $success = FALSE;
-        $em = $this->getDoctrine()->getManager();
         $type = $request->get('type');
+        $id = $request->get('id');
+
+        $em = $this->getDoctrine()->getManager();
         $className = Util::getClassName($type);
         $repo = $em->getRepository($className);
+
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $inArray = [
+            "className" => $className,
+            "id" => $id,
+            "property" => "events"
+        ];
+
+        // get pagination, where & sort
+        if ($request) {
+            $limit = [];
+            $limit['start'] = $request->get('start') ?: 0;
+            $limit['pageSize'] = $request->get('limit') ?: 12;
+
+            $filter = json_decode($request->get('filter'), 1);
+            $where = [];
+            if ($filter) {
+                foreach ($filter as $f) {
+                    $where[$f['property']] = $f['value'];
+                }
+
+            }
+
+            $sort = json_decode($request->get('sort'), 1);
+            if ($sort) {
+                $orderBy = [
+                    $sort[0]["property"] => $sort[0]["direction"]
+                ];
+            } else {
+                $orderBy = [];
+            }
+        } else {
+            $limit = [];
+            $limit['start'] = 0;
+            $limit['pageSize'] = 12;
+            $where = [];
+            $orderBy = [];
+        }
 
         $encoder = new JsonEncoder();
         $defaultContext = [
@@ -83,20 +126,19 @@ class EventController extends AbstractController
         $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer([$normalizer], [$encoder]);
 
-        $typeObject = $repo->find($request->get('id'));
-
         try{
-            $objects = array();
-            foreach ($typeObject->getEvents() as $object) {
-                $serializedObject = $serializer->serialize($object, 'json');
-                $objects[] = json_decode($serializedObject);
-            }
+            $data = $base->findIn(Event::class, $inArray, $where, $limit, $orderBy);
+
+            $objectsJson = $serializer->serialize($data['data'], "json");
+            $objects = json_decode($objectsJson);
+
             $success = TRUE;
         }catch(Exception $ex){}
 
         $returnArray = [
             "data" => $objects,
-            "success" => $success
+            "success" => $success,
+            "total" => $data["total"],
         ];
         return new JsonResponse($returnArray);
     }
@@ -107,16 +149,18 @@ class EventController extends AbstractController
     public function new(Request $request): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $repo = $entityManager->getRepository(Person::class);
+        $id = $request->get('id');
+        $type = $request->get('type');
+        $className = Util::getClassName($type);
+        $repo = $entityManager->getRepository($className);
 
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        $id = $request->get('id');
-        $person = $repo->find($id);
-        if ($person) {
-            $person->addEvent($event);
+        $object = $repo->find($id);
+        if ($object) {
+            $object->addEvent($event);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +168,7 @@ class EventController extends AbstractController
             $event = $form->getData();
 
             $entityManager->persist($event);
-            $entityManager->persist($person);
+            $entityManager->persist($object);
             $entityManager->flush();
 
             return new JsonResponse([
@@ -135,7 +179,6 @@ class EventController extends AbstractController
 
         return new JsonResponse([
             'success'=>false,
-            'errors' => (string)$form->getErrors(true)
         ]);
     }
 }

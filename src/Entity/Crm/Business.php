@@ -127,7 +127,7 @@ class Business
     /**
      * @ORM\ManyToMany(targetEntity="Note")
      * @ORM\JoinTable(name="business_notes",
-     *     joinColumns={@ORM\JoinColumn(name="business_id", referencedColumnName="id")},
+     *     joinColumns={@ORM\JoinColumn(name="business_id", referencedColumnName="id",onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id",onDelete="CASCADE")}
      * )
      */

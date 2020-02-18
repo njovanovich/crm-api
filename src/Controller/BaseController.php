@@ -46,11 +46,11 @@ class BaseController extends AbstractController
 
         // get pagination
         if ($request) {
+            $limit = [];
+            $limit['start'] = $request->get('start') ?: 0;
+            $limit['pageSize'] = $request->get('limit') ?: 12;
+
             $filter = json_decode($request->get('filter'), 1);
-
-            $start = $request->get('start') ?: 0;
-            $pageSize = $request->get('limit') ?: 12;
-
             $where = [];
             if ($filter) {
                 foreach ($filter as $f) {
@@ -68,100 +68,21 @@ class BaseController extends AbstractController
                 $orderBy = [];
             }
         } else {
-            $start = 0;
-            $pageSize = 12;
+            $limit = [];
+            $limit['start'] = 0;
+            $limit['pageSize'] = 12;
             $where = [];
             $orderBy = [];
         }
 
-        $reflectionClass = new \ReflectionClass($class);
-        $properties = $reflectionClass->getProperties ();
-        $reader = new AnnotationReader();
-        $propertyAnnotations = [];
-        foreach ($properties as $property) {
-            $annotations = $reader->getPropertyAnnotations(
-                $property
-            );
-            if ($annotations) {
-                $propertyAnnotations[$property->getName()] = $annotations;
-            }
-        }
+        $data = $this->findBy($class, $where, $limit, $orderBy);
 
-        // create dql
-        $firstSelector = "a";
-        $selectorIndex = 0;
-        $joinDql = "";
-        $extraSelectors = [];
-        $columns = [];
-        foreach ($propertyAnnotations as $property=>$annotations) {
-            $isJoin = FALSE;
-            foreach ($annotations as $annotation) {
-                switch (get_class($annotation)) {
-                    case @ORM\ManyToMany::class:
-                        $isJoin = TRUE;
-                        break;
-                    case @ORM\ManyToOne::class:
-                        $isJoin = TRUE;
-                        break;
-                    case @ORM\Column::class:
-                        $columns[$property] = $annotation;
-                        break;
-                }
-            }
-            if ($isJoin) {
-                $extraSelector = chr(98 + $selectorIndex++);
-                $joinDql .= " LEFT JOIN $firstSelector.$property $extraSelector ";
-                $extraSelectors[] = $extraSelector;
-            }
-
-        }
-        $select = $firstSelector. "," . implode(',', $extraSelectors);
-        $dql = "SELECT $select FROM $class AS $firstSelector ";
-        $dql .= $joinDql;
-
-        // build the where clause
-        $whereSql = "";
-        if ($where){
-            $whereKeys = array_keys($where);
-            $whereValues = array_values($where);
-            $whereSqlArray = [];
-            if ($whereKeys[0] == "all"){
-                foreach($columns as $property=>$column) {
-                    if ($column->type == "string") {
-                        $whereSqlArray[] = " $firstSelector.$property LIKE '" . $whereValues[0] . "%'";;
-                    }
-                }
-                $whereSql = implode(' OR ', $whereSqlArray);
-            } else {
-                foreach ($where as $key=>$value) {
-                    $whereSqlArray[] = " $firstSelector." .$key . " LIKE '" . $value . "%'";
-                }
-                $whereSql = implode(' AND ', $whereSqlArray);
-            }
-
-            $dql .= " WHERE " . $whereSql;
-        }
-        if (count($orderBy)) {
-            $dql .= " ORDER BY " . $sort[0]["property"] . " " . $sort[0]["direction"];
-        }
-
-        $query = $em->createQuery($dql);
-        $query->setMaxResults($pageSize);
-        $query->setFirstResult($start * $pageSize);
-
-        $objects = $query->getArrayResult();
+        $objects = $data['data'];
 
         $serializedObject = $serializer->serialize($objects, 'json');
         $objects = json_decode($serializedObject);
 
-        // get total
-        $dql = "SELECT count($firstSelector) as count FROM $class $firstSelector";
-        if ($whereSql){
-            $dql .= " WHERE $whereSql";
-        }
-        $query = $em->createQuery($dql);
-        $countResult = $query->getArrayResult();
-        $count = $countResult[0]['count'];
+        $count = $data['count'];
 
         $response = new JsonResponse();
         $returnArray = [
@@ -237,20 +158,18 @@ class BaseController extends AbstractController
         return new JsonResponse(['success'=>true]);
     }
 
-    protected function findBy($className, $where=[], $limit=[], $sort=[]){
+    /**
+     * @param $className
+     * @param array $where
+     * @param array $limit
+     * @param array $sort
+     * @return array
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \ReflectionException
+     */
+    public function findBy($className, $where=[], $limit=[], $sort=[]){
         $em = $this->getDoctrine()->getManager();
-        $reflectionClass = new \ReflectionClass($className);
-        $properties = $reflectionClass->getProperties ();
-        $reader = new AnnotationReader();
-        $propertyAnnotations = [];
-        foreach ($properties as $property) {
-            $annotations = $reader->getPropertyAnnotations(
-                $property
-            );
-            if ($annotations) {
-                $propertyAnnotations[$property->getName()] = $annotations;
-            }
-        }
+        $propertyAnnotations = $this->getAnnotations($className);
 
         // create dql
         $firstSelector = "a";
@@ -298,8 +217,14 @@ class BaseController extends AbstractController
                 }
                 $whereSql = implode(' OR ', $whereSqlArray);
             } else {
-                foreach ($where as $key=>$value) {
-                    $whereSqlArray[] = " $firstSelector." .$key . " LIKE '" . $value . "%'";
+                foreach($columns as $property=>$column) {
+                    if ($value = $where[$property]) {
+                        if ($column->type == "string") {
+                            $whereSqlArray[] = " $firstSelector." . $where[$property] . " LIKE '" . $value . "%'";
+                        } else if ($column->type == "integer" || $column->type == "int") {
+                            $whereSqlArray[] = " $firstSelector." . $where[$property] . " = '" . $value . "'";
+                        }
+                    }
                 }
                 $whereSql = implode(' AND ', $whereSqlArray);
             }
@@ -320,7 +245,164 @@ class BaseController extends AbstractController
 
         $objects = $query->getArrayResult();
 
-        return $objects;
+        // get total
+        $dql = "SELECT count($firstSelector) as count FROM $className $firstSelector";
+        if ($whereSql){
+            $dql .= " WHERE $whereSql";
+        }
+        $query = $em->createQuery($dql);
+        $countResult = $query->getArrayResult();
+        $count = $countResult[0]['count'];
+
+        return array("data"=>$objects, "count" => $count);
     }
 
+    /**
+     * @param $className
+     * @param $inArray
+     * @param array $where
+     * @param array $limit
+     * @param array $sort
+     */
+    public function findIn($className, $inArray, $where=[], $limit=[], $sort=[]){
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->request;
+
+        // get pagination
+        if ($request) {
+            // get limits
+            $limit = [];
+            $limit['start'] = $request->get('start') ?: 0;
+            $limit['pageSize'] = $request->get('limit') ?: 12;
+
+            // get filter
+            $filter = json_decode($request->get('filter'), 1);
+            $where = [];
+            if ($filter) {
+                foreach ($filter as $f) {
+                    $where[$f['property']] = $f['value'];
+                }
+
+            }
+
+            // get order by
+            $sort = json_decode($request->get('sort'), 1);
+            if ($sort) {
+                $orderBy = [
+                    $sort[0]["property"] => $sort[0]["direction"]
+                ];
+            } else {
+                $orderBy = [];
+            }
+        } else {
+            $limit = [];
+            $limit['start'] = 0;
+            $limit['pageSize'] = 12;
+            $where = [];
+            $orderBy = [];
+        }
+
+        // get the "in" array
+        $inClassName = $inArray["className"];
+        $inId = $inArray["id"];
+        $inClassProperty = $inArray["property"];
+
+        // build where clause
+        $columns = [];
+        $propertyAnnotations = $this->getAnnotations($className);
+        foreach ($propertyAnnotations as $property=>$annotations) {
+            foreach ($annotations as $annotation) {
+                switch (get_class($annotation)) {
+                    case @ORM\Column::class:
+                        $columns[$property] = $annotation;
+                        break;
+                }
+            }
+        }
+
+        $whereKeys = array_keys($where);
+        $isAll = (count($whereKeys) && $whereKeys[0] == 'all');
+        $value = "";
+        if ($isAll) {
+            $value = $where['all'];
+        }
+
+        $whereSqlArray = [];
+        $whereSql = "";
+        foreach ($columns as $property=>$column){
+            if ($isAll) {
+                if ($column->type == "string") {
+                    $whereSqlArray[] = " a.$property LIKE '" . $value . "%'";
+                }
+            } else {
+                if (in_array($property,$where)) {
+                    $value = $where[$property];
+                    if ($column->type == "string") {
+                        $whereSqlArray[] = " a." . $where[$property] . " LIKE '" . $value . "%'";
+                    } else if ($column->type == "integer" || $column->type == "int") {
+                        $whereSqlArray[] = " a." . $where[$property] . " = '" . $value . "'";
+                    }
+                }
+            }
+        }
+        if (count($whereSqlArray)) {
+            if ($isAll) {
+                $whereSql = implode(' OR ', $whereSqlArray);
+            } else {
+                $whereSql = implode(' AND ', $whereSqlArray);
+            }
+        }
+
+        $dql = "SELECT a 
+                    FROM $className a 
+                    WHERE a.id IN (
+                        SELECT b.id 
+                            FROM $inClassName c LEFT JOIN c.$inClassProperty b 
+                        WHERE c.id = $inId
+                    )";
+
+        if ($whereSql) {
+            $dql .= " AND ($whereSql)";
+        }
+
+        $query = $em->createQuery($dql);
+        if (count($limit)){
+            $start = $limit["start"];
+            $pageSize = $limit["pageSize"];
+            $query->setMaxResults($pageSize);
+            $query->setFirstResult($start * $pageSize);
+        }
+
+        $objects = $query->getArrayResult();
+
+        // get total
+        $dql = str_replace("SELECT a", "SELECT count(a) as count ", $dql);
+        $query = $em->createQuery($dql);
+        $countResult = $query->getArrayResult();
+        $count = $countResult[0]['count'];
+
+        return [
+            "total" => $count,
+            "data" => $objects
+        ];
+
+    }
+
+    private function getAnnotations($className){
+        $propertyAnnotations = [];
+
+        $reflectionClass = new \ReflectionClass($className);
+        $properties = $reflectionClass->getProperties ();
+        $reader = new AnnotationReader();
+
+        foreach ($properties as $property) {
+            $annotations = $reader->getPropertyAnnotations(
+                $property
+            );
+            if ($annotations) {
+                $propertyAnnotations[$property->getName()] = $annotations;
+            }
+        }
+        return $propertyAnnotations;
+    }
 }

@@ -8,7 +8,7 @@
 
 namespace App\Entity\Crm;
 
-use App\Entity\BaseObject;
+use App\Entity\Event;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -59,7 +59,7 @@ class Lead
 
     /**
      * @ORM\ManyToOne(targetEntity="Business")
-     * @ORM\JoinColumn(name="business", referencedColumnName="id")
+     * @ORM\JoinColumn(name="business", referencedColumnName="id",nullable=true,onDelete="SET NULL")
      */
     private $business;
 
@@ -98,11 +98,20 @@ class Lead
     /**
      * @ORM\ManyToMany(targetEntity="Note")
      * @ORM\JoinTable(name="lead_notes",
-     *     joinColumns={@ORM\JoinColumn(name="lead_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id",onDelete="CASCADE")}
+     *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id",onDelete="CASCADE")}
      * )
      */
     private $notes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event")
+     * @ORM\JoinTable(name="lead_events",
+     *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")}
+     * )
+     */
+    private $events;
 
     /**
      * @return mixed
@@ -334,6 +343,30 @@ class Lead
     public function addNote($note)
     {
         $this->notes[] = $note;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addEvent($event)
+    {
+        $this->events[] = $event;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events): void
+    {
+        $this->events = $events;
     }
 
 }
