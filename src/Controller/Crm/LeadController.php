@@ -6,6 +6,7 @@ use App\Entity\Crm\Lead;
 use App\Entity\Person;
 use App\Form\Crm\LeadType;
 use App\Controller\BaseController;
+use Doctrine\ORM\Query\Expr\Base;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +27,8 @@ class LeadController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
-        return $base->index(Lead::class, $request->get('start'));
+        $base->setRequest($request);
+        return $base->index(Lead::class, [BaseController::SEARCH_DEEP]);
     }
 
     /**
@@ -116,9 +118,7 @@ class LeadController extends AbstractController
         $dql = 'SELECT l,p,b FROM App\Entity\Crm\Lead l
                         LEFT JOIN l.person p
                         LEFT JOIN l.business b
-                    WHERE l.status != \'closed\' 
-                        AND l.status != \'closed - won\' 
-                        AND l.status != \'closed - lost\'';
+                    WHERE l.status = \'new\'';
         $query = $em->createQuery($dql)
             ->setFirstResult($request->get('start'))
             ->setMaxResults($request->get('limit'));
@@ -126,9 +126,7 @@ class LeadController extends AbstractController
         $arrayList = $query->getArrayResult();
 
         $dql = 'SELECT count(l) as count FROM App\Entity\Crm\Lead l
-                    WHERE l.status != \'closed\' 
-                        AND l.status != \'closed - won\' 
-                        AND l.status != \'closed - lost\'';
+                    WHERE l.status = \'new\'';
         $query = $em->createQuery($dql);
         $total = $query->getScalarResult();
 

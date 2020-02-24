@@ -64,7 +64,7 @@ class Lead
     private $owner;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Business",fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Business",fetch="EAGER")
      * @ORM\JoinColumn(name="business", referencedColumnName="id",nullable=true,onDelete="SET NULL")
      */
     private $business;
@@ -96,7 +96,7 @@ class Lead
     private $assignedTo;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Note")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
      * @ORM\JoinTable(name="lead_notes",
      *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id",onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id",onDelete="CASCADE")}

@@ -26,6 +26,9 @@ class BaseController extends AbstractController
     private $csrfToken;
     private $request;
 
+    public const SEARCH_IN = "SEARCH_IN";
+    public const SEARCH_DEEP = "SEARCH_DEEP";
+
     public function __construct(/*Request $request*/)
     {
         $this->session = new Session();
@@ -38,7 +41,7 @@ class BaseController extends AbstractController
         $this->request = $request;
     }
 
-    public function index($class): Response
+    public function index($class, $flags=[]): Response
     {
         $request = $this->request;
         $em = $this->getDoctrine()->getManager();
@@ -75,7 +78,7 @@ class BaseController extends AbstractController
             $orderBy = [];
         }
 
-        $data = $this->findBy($class, $where, $limit, $orderBy);
+        $data = $this->findBy($class, $where, $limit, $orderBy, $flags);
 
         $objects = $data['data'];
 
@@ -169,7 +172,11 @@ class BaseController extends AbstractController
      */
     public function findBy($className, $where=[], $limit=[], $sort=[], $flags=[]){
         $em = $this->getDoctrine()->getManager();
-        $propertyAnnotations = $this->getAnnotations($className);
+        $classAnnotations = $this->getAnnotations($className);
+
+        // flags
+        $searchDeep = in_array(BaseController::SEARCH_DEEP, $flags);
+        $searchIn = in_array(BaseController::SEARCH_IN, $flags);
 
         // create dql
         $firstSelector = "a";
@@ -177,28 +184,54 @@ class BaseController extends AbstractController
         $joinDql = "";
         $extraSelectors = [];
         $columns = [];
-        foreach ($propertyAnnotations as $property=>$annotations) {
+        $joinTables = [];
+        foreach ($classAnnotations as $property=>$annotations) {
             $isJoin = FALSE;
+            $joinClassName = "";
             foreach ($annotations as $annotation) {
                 switch (get_class($annotation)) {
                     case @ORM\ManyToMany::class:
                         $isJoin = TRUE;
+                        $joinClassName = $annotation->targetEntity;
                         break;
                     case @ORM\ManyToOne::class:
                         $isJoin = TRUE;
+                        $joinClassName = $annotation->targetEntity;
                         break;
                     case @ORM\Column::class:
-                        $columns[$property] = $annotation;
+                        $columns[$firstSelector][$property] = $annotation;
                         break;
                 }
             }
             if ($isJoin) {
                 $extraSelector = chr(98 + $selectorIndex++);
-                $joinDql .= " LEFT JOIN $firstSelector.$property $extraSelector ";
+                $joinDql .= " LEFT JOIN $firstSelector.$property $extraSelector \r\n";
                 $extraSelectors[] = $extraSelector;
+                $joinTables[$extraSelector] = [
+                    "selector" => $extraSelector,
+                    "className" => $joinClassName
+                ];
             }
-
         }
+
+        // do the extra tables if isDeep
+        if ($searchDeep) {
+            foreach ($joinTables as $extraSelector=>$joinTable) {
+                $joinClassName = $joinTable['className'];
+                $classAnnotations = $this->getAnnotations($joinClassName);
+                foreach ($classAnnotations as $property=>$annotations) {
+                    foreach ($annotations as $annotation) {
+                        switch (get_class($annotation)) {
+                            case @ORM\Column::class:
+                                $columns[$extraSelector][$property] = $annotation;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // start the dql
         $select = $firstSelector. "," . implode(',', $extraSelectors);
         $dql = "SELECT $select FROM $className AS $firstSelector ";
         $dql .= $joinDql;
@@ -210,19 +243,34 @@ class BaseController extends AbstractController
             $whereValues = array_values($where);
             $whereSqlArray = [];
             if ($whereKeys[0] == "all"){
-                foreach($columns as $property=>$column) {
-                    if ($column->type == "string") {
-                        $whereSqlArray[] = " $firstSelector.$property LIKE '" . $whereValues[0] . "%'";;
+                foreach($columns as $selector=>$column){
+                    foreach($column as $property=>$field) {
+                        if ($field->type == "string") {
+                            $searchTerm = $whereValues[0] . "%";
+                            if ($searchIn) {
+                                $searchTerm = "%" . $whereValues[0] . "%";
+                            }
+                            $whereSqlArray[] = " $selector.$property LIKE '$searchTerm' ";;
+                        }
                     }
                 }
                 $whereSql = implode(' OR ', $whereSqlArray);
             } else {
-                foreach($columns as $property=>$column) {
-                    if ($value = $where[$property]) {
-                        if ($column->type == "string") {
-                            $whereSqlArray[] = " $firstSelector." . $where[$property] . " LIKE '" . $value . "%'";
-                        } else if ($column->type == "integer" || $column->type == "int") {
-                            $whereSqlArray[] = " $firstSelector." . $where[$property] . " = '" . $value . "'";
+                // iterate over the columns until found in where
+                foreach($columns as $selector=>$column){
+                    foreach($column as $property=>$field) {
+                        if (in_array($property, array_keys($where))) {
+                            if ($value = $where[$property]) {
+                                if ($field->type == "string") {
+                                    $searchTerm = $value . "%";
+                                    if ($searchIn) {
+                                        $searchTerm = "%" . $value . "%";
+                                    }
+                                    $whereSqlArray[] = " $selector.$property LIKE '$value'";
+                                } else if ($field->type == "integer") {
+                                    $whereSqlArray[] = " $selector.$property = '$value'";
+                                }
+                            }
                         }
                     }
                 }
@@ -232,7 +280,8 @@ class BaseController extends AbstractController
             $dql .= " WHERE " . $whereSql;
         }
         if (count($sort)) {
-            $dql .= " ORDER BY " . $sort[0]["property"] . " " . $sort[0]["direction"];
+            $sortArrayKeys = array_keys($sort);
+            $dql .= " ORDER BY $firstSelector." . $sortArrayKeys[0] . " " . $sort[$sortArrayKeys[0]];
         }
 
         $query = $em->createQuery($dql);
@@ -240,13 +289,13 @@ class BaseController extends AbstractController
             $start = $limit["start"];
             $pageSize = $limit["pageSize"];
             $query->setMaxResults($pageSize);
-            $query->setFirstResult($start * $pageSize);
+            $query->setFirstResult($start);
         }
 
         $objects = $query->getArrayResult();
 
         // get total
-        $dql = "SELECT count($firstSelector) as count FROM $className $firstSelector";
+        $dql = "SELECT count($firstSelector) as count FROM $className $firstSelector $joinDql";
         if ($whereSql){
             $dql .= " WHERE $whereSql";
         }
