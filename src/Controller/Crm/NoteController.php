@@ -4,6 +4,7 @@ namespace App\Controller\Crm;
 
 use App\Entity\Crm\Note;
 use App\Controller\BaseController;
+use App\Entity\Crm\Util;
 use App\Form\Crm\NoteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -81,27 +82,7 @@ class NoteController extends AbstractController
 
         try{
             $type = $request->get('type');
-            $class = "";
-            switch($type){
-                case "person":
-                    $class = "App\Entity\Person";
-                    break;
-                case "business":
-                    $class = "App\Entity\Crm\Business";
-                    break;
-                case "event":
-                    $class = "App\Entity\Event";
-                    break;
-                case "quote":
-                    $class = "App\Entity\Crm\Quote";
-                    break;
-                case "call":
-                    $class = "App\Entity\Crm\Call";
-                    break;
-                case "lead":
-                    $class = "App\Entity\Crm\Lead";
-                    break;
-            }
+            $class = Util::getClassName($type);
             if ($class) {
                 $repo = $this->getDoctrine()->getRepository($class);
                 $object = $repo->find($request->get('id'));
@@ -131,27 +112,8 @@ class NoteController extends AbstractController
         $id = $request->get('id');
         $notes = [];
         try{
-            $class = "";
-            switch($type){
-                case "person":
-                    $class = "App\Entity\Person";
-                    break;
-                case "event":
-                    $class = "App\Entity\Event";
-                    break;
-                case "call":
-                    $class = "App\Entity\Crm\Call";
-                    break;
-                case "business":
-                    $class = "App\Entity\Crm\Business";
-                    break;
-                case "quote":
-                    $class = "App\Entity\Crm\Quote";
-                    break;
-                case "lead":
-                    $class = "App\Entity\Crm\Lead";
-                    break;
-            }
+            $class = Util::getClassName($type);
+
             if ($class) {
                 $repo = $this->getDoctrine()->getRepository($class);
                 $object = $repo->find($id);

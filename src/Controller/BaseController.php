@@ -116,7 +116,7 @@ class BaseController extends AbstractController
             ]);
         }
 
-        return new JsonResponse(['success'=>false]);
+        return new JsonResponse(['success'=>false], 400);
     }
 
     public function show($object, $class, $token=''): Response
@@ -167,7 +167,7 @@ class BaseController extends AbstractController
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \ReflectionException
      */
-    public function findBy($className, $where=[], $limit=[], $sort=[]){
+    public function findBy($className, $where=[], $limit=[], $sort=[], $flags=[]){
         $em = $this->getDoctrine()->getManager();
         $propertyAnnotations = $this->getAnnotations($className);
 

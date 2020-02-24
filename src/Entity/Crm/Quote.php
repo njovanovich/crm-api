@@ -56,9 +56,9 @@ class Quote
     protected $updatedBy;
 
     /**
-     * @ORM\Column(name="quote_number",length=40)
+     * @ORM\Column(name="quote_number",length=40,nullable=true)
      */
-    private $quoteNumber;
+    private $quoteId;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person")
@@ -67,25 +67,32 @@ class Quote
     private $person;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Lead")
+     * @ORM\JoinColumn(name="lead", referencedColumnName="id",onDelete="SET NULL")
+     */
+    private $lead;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
+     */
+    private $owner;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Business")
      * @ORM\JoinColumn(name="business", referencedColumnName="id")
      */
     private $business;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $quoteLines;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      */
     private $total;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", fetch="EAGER")
      * @ORM\JoinTable(name="quote_events",
-     *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id")},
+     *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id",onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")}
      *      )
      */
@@ -94,7 +101,7 @@ class Quote
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
      * @ORM\JoinTable(name="quote_notes",
-     *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id")},
+     *      joinColumns={@ORM\JoinColumn(name="quote", referencedColumnName="id",onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id", unique=true,onDelete="CASCADE")}
      *      )
      */
@@ -183,17 +190,49 @@ class Quote
     /**
      * @return mixed
      */
-    public function getQuoteNumber()
+    public function getQuoteId()
     {
-        return $this->quoteNumber;
+        return $this->quoteId;
     }
 
     /**
-     * @param mixed $quoteNumber
+     * @param mixed $quoteId
      */
-    public function setQuoteNumber($quoteNumber): void
+    public function setQuoteId($quoteId): void
     {
-        $this->quoteNumber = $quoteNumber;
+        $this->quoteId = $quoteId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLead()
+    {
+        return $this->lead;
+    }
+
+    /**
+     * @param mixed $lead
+     */
+    public function setLead($lead): void
+    {
+        $this->lead = $lead;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner): void
+    {
+        $this->owner = $owner;
     }
 
     /**
@@ -226,22 +265,6 @@ class Quote
     public function setBusiness($business): void
     {
         $this->business = $business;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getQuoteLines()
-    {
-        return $this->quoteLines;
-    }
-
-    /**
-     * @param mixed $quoteLines
-     */
-    public function setQuoteLines($quoteLines): void
-    {
-        $this->quoteLines = $quoteLines;
     }
 
     /**

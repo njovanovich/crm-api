@@ -53,17 +53,17 @@ class Event
     protected $updatedBy;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $dateTime;
 
     /**
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      */
     private $status;
 
@@ -91,7 +91,7 @@ class Event
     private $duration;
 
     /**
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      */
     private $type;
 

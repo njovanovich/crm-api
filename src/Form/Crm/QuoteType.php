@@ -12,11 +12,12 @@ class QuoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quoteNumber')
-            ->add('quoteLines')
+            ->add('id')
+            ->add('quoteId')
             ->add('person')
             ->add('total')
             ->add('business')
+            ->add('lead')
             ->add('notes')
         ;
     }

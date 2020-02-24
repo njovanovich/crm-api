@@ -39,6 +39,9 @@ class Util
             case "lead":
                 $className = "App\Entity\Crm\Lead";
                 break;
+            case "job":
+                $className = "App\Entity\Crm\Job";
+                break;
             default:
                 throw new Exception("Cannot change machine name of entity to classname");
         }

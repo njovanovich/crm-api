@@ -7,6 +7,7 @@ use App\Entity\Person;
 use App\Form\Crm\LeadType;
 use App\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,46 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LeadController extends AbstractController
 {
-//    /**
-//     * @Route("/", name="crm_lead_index", methods={"GET"})
-//     */
-//    public function index(Request $request): Response
-//    {
-//        $conn = $this->getDoctrine()->getConnection();
-//
-//        $page = $request->get('page') ?? 1;
-//        $limit = (int)($request->get('limit') ?? 10);
-//        $start = (int)(($page-1) * $limit);
-//        $orderby = $request->get('sort') ?? 'id ASC';
-//        $sql = "SELECT *, leads.id as id, b.name as business_name,
-//                    IF(p.last_name!='',concat(p.last_name,', ',p.first_name),p.first_name) as person_name,
-//                    p.email as person_email, p.phone as person_phone
-//                    FROM leads LEFT JOIN businesses b on business=b.id
-//                        LEFT JOIN people p on person=p.id
-//             ORDER BY :orderby
-//             LIMIT $start, $limit";
-//
-//        $stmt = $conn->prepare($sql);
-//        $stmt->execute(['orderby' => $orderby]);
-//        $objects = array();
-//        $objects['data'] = $stmt->fetchAll();;
-//
-//        $sql = "SELECT COUNT(*) as count FROM leads ";
-//
-//        $stmt = $conn->prepare($sql);
-//        $stmt->execute();
-//
-//        $countResult = $stmt->fetch();
-//        $count = $countResult['count'];
-//        $objects['total'] = $count;
-//        $objects['success'] = true;
-//
-//        $response = new JsonResponse();
-//        $response->setData($objects);
-//
-//        $response->headers->set('Content-Type', 'application/json');
-//        return $response;
-//    }
 
     /**
      * @Route("/", name="crm_lead_index", methods={"GET"})
@@ -76,28 +37,6 @@ class LeadController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
 
-        $em = $this->getDoctrine()->getManager();
-
-        $person = $request->get("person");
-        if (!is_numeric($person)) {
-            $name = $request->get('name');
-            $names = explode(' ', $name);
-            $firstName = implode(" ",array_slice ($names, 0, count($names) - 2));
-            $lastName = $names[count($names) - 1];
-
-            $person = new Person();
-            $person->setFirstName($firstName);
-            $person->setLastName($lastName);
-
-            $em->persist($person);
-            $em->flush();
-
-            $request->setParameter('person', $person->getId());
-        }
-        $business = $request->get("business");
-
-
-
         return $base->new($request, Lead::class, LeadType::class);
     }
 
@@ -109,6 +48,98 @@ class LeadController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         return $base->show($lead, Lead::class);
+    }
+
+    /**
+     * @Route("/details/{id}", name="crm_lead_details", methods={"GET"})
+     */
+    public function details(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->get('id');
+
+        $dql = 'SELECT l,p,b,q,j from App\Entity\Crm\Lead l
+                        LEFT JOIN App\Entity\Person p WITH p.id=l.person
+                        LEFT JOIN App\Entity\Crm\Business b WITH b.id=l.business
+                        LEFT JOIN App\Entity\Crm\Quote q WITH l.id=q.lead
+                        LEFT JOIN App\Entity\Crm\Job j WITH q.id=j.quote
+                WHERE l.id=' .$id;
+
+        $query = $em->createQuery($dql);
+        $objects = $query->getArrayResult();
+
+        if (count($objects)) {
+            try{
+                $outArray = [];
+                $outArray["lead_id"] = $objects[0]["id"];
+                $outArray["lead_person"] = $objects[1];
+                $outArray["lead_business"] = $objects[2];
+                $outArray["lead_status"] = $objects[0]["status"];
+                $outArray["lead_amount"] = $objects[0]["amount"];
+
+                if ($objects[3]) {
+                    $outArray["quote_business"] = $objects[2];
+                    $outArray["quote_quoteId"] = $objects[3]["quoteId"];
+                    $outArray["quote_total"] = $objects[3]["total"];
+                }
+
+                if ($objects[4]) {
+                    $outArray["job_business"] = $objects[2];
+                    $outArray["job_jobId"] = $objects[4]["jobId"];
+                    $outArray["job_name"] = $objects[4]["name"];
+                    $outArray["job_status"] = $objects[4]["status"];
+                    $outArray["job_completedDate"] = $objects[4]["completedDate"];
+                    $outArray["job_deliveryDate"] = $objects[4]["deliveryDate"];
+                }
+
+            }catch(Exception $exception){}
+        }
+
+        $objects = [];
+        $objects['data'] = $outArray;
+        $objects['success'] = TRUE;
+
+        $response = new JsonResponse();
+        $response->setData($objects);
+        return $response;
+    }
+
+    /**
+     * @Route("/my/leads", name="crm_lead_mine", methods={"GET"})
+     */
+    public function myleads(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+        $dql = 'SELECT l,p,b FROM App\Entity\Crm\Lead l
+                        LEFT JOIN l.person p
+                        LEFT JOIN l.business b
+                    WHERE l.status != \'closed\' 
+                        AND l.status != \'closed - won\' 
+                        AND l.status != \'closed - lost\'';
+        $query = $em->createQuery($dql)
+            ->setFirstResult($request->get('start'))
+            ->setMaxResults($request->get('limit'));
+
+        $arrayList = $query->getArrayResult();
+
+        $dql = 'SELECT count(l) as count FROM App\Entity\Crm\Lead l
+                    WHERE l.status != \'closed\' 
+                        AND l.status != \'closed - won\' 
+                        AND l.status != \'closed - lost\'';
+        $query = $em->createQuery($dql);
+        $total = $query->getScalarResult();
+
+        $objects = [];
+        $objects['data'] = $arrayList;
+        $objects['total'] = $total[0]['count'];
+        $objects['success'] = TRUE;
+
+        $response = new JsonResponse();
+        $response->setData($objects);
+        return $response;
     }
 
     /**
@@ -137,6 +168,29 @@ class LeadController extends AbstractController
         }
 
         return $base->edit($request, $lead, LeadType::class);
+    }
+
+    /**
+     * @Route("/{id}/editstatus", name="crm_lead_edit_status", methods={"POST"})
+     */
+    public function editstatus(Request $request, Lead $lead): Response
+    {
+        $success = FALSE;
+        $em = $this->getDoctrine()->getManager();
+
+        $status = $request->get('status');
+        try{
+            $objects = [];
+            $lead->setStatus($status);
+            $em->persist($lead);
+            $em->flush();
+            $success = TRUE;
+        }catch(Exception $exception){}
+
+        $objects['success'] = $success;
+        $response = new JsonResponse();
+        $response->setData($objects);
+        return $response;
     }
 
     /**

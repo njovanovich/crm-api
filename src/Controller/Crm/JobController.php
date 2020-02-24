@@ -18,10 +18,11 @@ class JobController extends AbstractController
     /**
      * @Route("/", name="crm_job_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->index(Job::class);
     }
 
@@ -32,7 +33,7 @@ class JobController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
-        return $base->new($request, "App\Entity\Event", "App\Form\EventType");
+        return $base->new($request, "App\Entity\Crm\Job", "App\Form\Crm\JobType");
     }
 
     /**

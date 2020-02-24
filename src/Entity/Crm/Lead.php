@@ -52,37 +52,37 @@ class Lead
     protected $updatedBy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person",fetch="EAGER")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Business")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
+     */
+    private $owner;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Business",fetch="EAGER")
      * @ORM\JoinColumn(name="business", referencedColumnName="id",nullable=true,onDelete="SET NULL")
      */
     private $business;
 
     /**
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      */
     private $status;
 
     /**
-     * @ORM\Column(name="lead_source")
+     * @ORM\Column(name="lead_source",nullable=true)
      */
     private $leadSource;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      */
     private $amount;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="referred_by", referencedColumnName="id")
-     */
-    private $referredBy;
 
     /**
      * @ORM\Column(nullable=true)
@@ -98,7 +98,7 @@ class Lead
     /**
      * @ORM\ManyToMany(targetEntity="Note")
      * @ORM\JoinTable(name="lead_notes",
-     *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id")},
+     *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id",onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="note", referencedColumnName="id",onDelete="CASCADE")}
      * )
      */
@@ -107,7 +107,7 @@ class Lead
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Event")
      * @ORM\JoinTable(name="lead_events",
-     *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id")},
+     *     joinColumns={@ORM\JoinColumn(name="lead", referencedColumnName="id",onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")}
      * )
      */
@@ -215,22 +215,6 @@ class Lead
     public function setLeadSource($leadSource): void
     {
         $this->leadSource = $leadSource;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getReferredBy()
-    {
-        return $this->referredBy;
-    }
-
-    /**
-     * @param mixed $referredBy
-     */
-    public function setReferredBy($referredBy): void
-    {
-        $this->referredBy = $referredBy;
     }
 
     /**

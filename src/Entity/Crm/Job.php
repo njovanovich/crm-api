@@ -55,44 +55,59 @@ class Job
     protected $updatedBy;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
+     */
+    private $jobId;
+
+    /**
+     * @ORM\Column(length=255,nullable=true)
      */
     private $status;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Quote")
+     * @ORM\JoinColumn(name="quote", referencedColumnName="id",onDelete="SET NULL")
      */
-    private $jobProperties;
+    protected $quote;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Business")
-     * @ORM\JoinColumn(name="business", referencedColumnName="id")
+     * @ORM\JoinColumn(name="business", referencedColumnName="id",onDelete="SET NULL")
      */
     protected $business;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
      * @ORM\JoinTable(name="job_notes",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id", unique=true)}
-     *      )
+     *      joinColumns={@ORM\JoinColumn(name="job",referencedColumnName="id",onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="note",referencedColumnName="id",unique=true,onDelete="CASCADE")}
+     * )
      */
     private $notes;
 
     /**
-     * @ORM\Column(type="datetime",nullable=true,options={"default" : NULL})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event")
+     * @ORM\JoinTable(name="job_events",
+     *      joinColumns={@ORM\JoinColumn(name="job",referencedColumnName="id",onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event",referencedColumnName="id",unique=true,onDelete="CASCADE")}
+     * )
+     */
+    private $events;
+
+    /**
+     * @ORM\Column(type="date",nullable=true,options={"default" : NULL})
      */
     private $deliveryDate;
 
     /**
      * @ORM\Column(type="datetime",nullable=true,options={"default" : NULL})
      */
-    private $closedDate;
+    private $completedDate;
 
     /**
      * @return mixed
@@ -108,22 +123,6 @@ class Job
     public function setName($name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getJobProperties()
-    {
-        return $this->jobProperties;
-    }
-
-    /**
-     * @param mixed $jobProperties
-     */
-    public function setJobProperties($jobProperties): void
-    {
-        $this->jobProperties = $jobProperties;
     }
 
     /**
@@ -255,6 +254,14 @@ class Job
     }
 
     /**
+     * @param $note
+     */
+    public function addNote($note): void
+    {
+        $this->notes[] = $note;
+    }
+
+    /**
      * @return mixed
      */
     public function getBusiness()
@@ -285,6 +292,78 @@ class Job
     {
         $this->closedDate = $closedDate;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getJobId()
+    {
+        return $this->jobId;
+    }
+
+    /**
+     * @param mixed $jobId
+     */
+    public function setJobId($jobId): void
+    {
+        $this->jobId = $jobId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events): void
+    {
+        $this->events = $events;
+    }
+
+    /**
+     * @param $event
+     */
+    public function addEvent($event){
+        $this->events[] = $event;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuote()
+    {
+        return $this->quote;
+    }
+
+    /**
+     * @param mixed $quote
+     */
+    public function setQuote($quote): void
+    {
+        $this->quote = $quote;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompletedDate()
+    {
+        return $this->completedDate;
+    }
+
+    /**
+     * @param mixed $completedDate
+     */
+    public function setCompletedDate($completedDate): void
+    {
+        $this->completedDate = $completedDate;
+    }
+
 
 
 }
