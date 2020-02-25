@@ -65,7 +65,7 @@ class LeadController extends AbstractController
                         LEFT JOIN App\Entity\Person p WITH p.id=l.person
                         LEFT JOIN App\Entity\Crm\Business b WITH b.id=l.business
                         LEFT JOIN App\Entity\Crm\Quote q WITH l.id=q.lead
-                        LEFT JOIN App\Entity\Crm\Job j WITH q.id=j.quote
+                        LEFT JOIN App\Entity\Crm\Job j WITH l.id=j.lead
                 WHERE l.id=' .$id;
 
         $query = $em->createQuery($dql);

@@ -18,11 +18,12 @@ class QuoteController extends AbstractController
     /**
      * @Route("/", name="crm_quote_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
-        return $base->index(Quote::class);
+        $base->setRequest($request);
+        return $base->index(Quote::class, [BaseController::SEARCH_DEEP]);
     }
 
     /**

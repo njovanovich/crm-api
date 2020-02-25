@@ -79,7 +79,7 @@ class Quote
     private $owner;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Business")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Business")
      * @ORM\JoinColumn(name="business", referencedColumnName="id")
      */
     private $business;

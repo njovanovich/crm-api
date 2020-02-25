@@ -70,6 +70,12 @@ class Job
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Lead")
+     * @ORM\JoinColumn(name="lead", referencedColumnName="id",onDelete="SET NULL")
+     */
+    protected $lead;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Quote")
      * @ORM\JoinColumn(name="quote", referencedColumnName="id",onDelete="SET NULL")
      */
@@ -362,6 +368,22 @@ class Job
     public function setCompletedDate($completedDate): void
     {
         $this->completedDate = $completedDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLead()
+    {
+        return $this->lead;
+    }
+
+    /**
+     * @param mixed $lead
+     */
+    public function setLead($lead): void
+    {
+        $this->lead = $lead;
     }
 
 

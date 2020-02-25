@@ -21,6 +21,7 @@ class JobType extends AbstractType
             ])
             ->add('business')
             ->add('quote')
+            ->add('lead')
             ->add('status')
         ;
     }

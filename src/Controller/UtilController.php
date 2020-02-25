@@ -23,27 +23,27 @@ class UtilController extends AbstractController
             [
                 'name' => 'Leads',
                 'image' => '/images/icons/icons8/16px/icons8-money-16.png',
-                'onclick' => 'Ext.getCmp("pnlMain").getLayout().setActiveItem(1);',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");',
             ],
             [
                 'name' => 'People',
                 'image' => '/images/icons/icons8/16px/icons8-people-16.png',
-                'onclick' => '',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlPerson");',
             ],
             [
                 'name' => 'Quotes',
                 'image' => '/images/icons/png/16x16/DocumentExport.png',
-                'onclick' => '',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlQuote");',
             ],
             [
                 'name' => 'Accounts',
                 'image' => '/images/icons/png/16x16/Account.png',
-                'onclick' => '',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlBusiness");',
             ],
             [
                 'name' => 'Jobs',
                 'image' => '/images/icons/png/16x16/Gear.png',
-                'onclick' => '',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlJob");',
             ],
             [
                 'name' => 'Users',
@@ -53,12 +53,12 @@ class UtilController extends AbstractController
             [
                 'name' => 'Reports',
                 'image' => '/images/icons/png/16x16/Piechart.png',
-                'onclick' => '',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReport");',
             ],
             [
                 'name' => 'Admin',
                 'image' => '/images/icons/icons8/16px/icons8-admin-settings-male-16.png',
-                'onclick' => 'alert("last");',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
             ]];
 
         $response = new JsonResponse();
@@ -170,41 +170,41 @@ class UtilController extends AbstractController
             [
                 'name' => 'Leads',
                 'image' => '/images/icons/icons8/64px/icons8-money-64.png',
-                'onclick'=> 'Ext.getCmp("pnlMain").getLayout().setActiveItem(1);',
+                'onclick'=> 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");',
             ],
             [
                 'name' =>'Accounts',
                 'image'=>'/images/icons/png/128x128/Account.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlBusiness");',
             ],
             [
                 'name'=>'Quotes',
                 'image'=>'/images/icons/png/128x128/DocumentExport.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlQuote");',
             ],
             [
                 'name'=>'Jobs',
                 'image'=>'/images/icons/png/128x128/Gear.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlJob");',
             ],
             [
                 'name'=>'People',
                 'image'=>'/images/icons/icons8/64px/icons8-people-64.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlPerson");',
             ],
             [
                 'name'=>'Users',
                 'image'=>'/images/icons/png/128x128/User2.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'',
             ],[
                 'name'=>'Reports',
                 'image'=>'/images/icons/png/128x128/Piechart.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReport");',
             ],
             [
                 'name'=>'Admin',
                 'image'=>'/images/icons/icons8/64px/icons8-admin-settings-male-64.png',
-                'onclick'=>'alert("hi");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
              ]];
 
         $response = new JsonResponse();
