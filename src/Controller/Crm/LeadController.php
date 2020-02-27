@@ -114,7 +114,6 @@ class LeadController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $dql = 'SELECT l,p,b FROM App\Entity\Crm\Lead l
                         LEFT JOIN l.person p
                         LEFT JOIN l.business b
@@ -149,21 +148,6 @@ class LeadController extends AbstractController
         $base->container = $this->container;
 
         $em = $this->getDoctrine()->getManager();
-
-        $person = $request->get("person");
-        if (!is_numeric($person)) {
-            $name = $person;
-            $names = explode(' ', $name);
-            $firstName = implode(" ",array_slice ($names, 0, count($names) - 2));
-            $lastName = $names[count($names) - 1];
-
-            $person = new Person();
-            $person->setFirstName($firstName);
-            $person->setLastName($lastName);
-
-            $em->persist($person);
-            $em->flush();
-        }
 
         return $base->edit($request, $lead, LeadType::class);
     }

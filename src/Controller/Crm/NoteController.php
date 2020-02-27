@@ -103,6 +103,43 @@ class NoteController extends AbstractController
     }
 
     /**
+     * @Route("/addnotes/{type}/{id}", name="event_add_to", methods={"GET"})
+     */
+    public function addNotes(Request $request): Response
+    {
+        $success = FALSE;
+        $type = $request->get('type');
+        $id = $request->get('id');
+        $notes = $request->get('notes');
+
+        $noteIds = explode(',', $notes);
+
+        $em = $this->getDoctrine()->getManager();
+        $className = Util::getClassName($type);
+        $repo = $em->getRepository($className);
+
+        $eventRepo = $em->getRepository(Note::class);
+
+        $object = $repo->find($id);
+
+        try{
+            foreach ($noteIds as $noteId) {
+                $note = $eventRepo->find($noteId);
+                $object->addNote($note);
+            }
+            $success = TRUE;
+        }catch(Exception $ex){
+            $success = FALSE;
+        }
+
+        $returnArray = [
+            "success" => $success,
+        ];
+        return new JsonResponse($returnArray);
+    }
+
+
+    /**
      * @Route("/getNotes/{type}/{id}", name="crm_get_notes_type", methods={"GET"})
      */
     public function getNotes(Request $request): Response

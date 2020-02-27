@@ -123,8 +123,60 @@ class UtilController extends AbstractController
                     'children' => [
                         (object)[
                             'text' => 'All Leads',
-                            'onclick' => 'Ext.getCmp("pnlMain").getLayout().setActiveItem(1);',
-
+                            'onclick' => '
+                                Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
+                                Ext.getCmp("tbpLead").getLayout().setActiveItem("grdLead");
+                                Ext.getCmp("grdLead").getStore().clearFilter();
+                                Ext.getCmp("grdLead").getStore().load();
+                            ',
+                            'icon' => '/images/icons/icons8/16px/icons8-money-16.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ],
+                        (object)[
+                            'text' => 'New Leads',
+                            'onclick' => '
+                                Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
+                                Ext.getCmp("tbpLead").getLayout().setActiveItem("grdLead");
+                                Ext.getCmp("grdLead").getStore().filter("status","new");
+                                Ext.getCmp("grdLead").getStore().reload();
+                            ',
+                            'icon' => '/images/icons/icons8/16px/icons8-money-16.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ],
+                        (object)[
+                            'text' => 'Quoting Leads',
+                            'onclick' => '
+                                Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
+                                Ext.getCmp("tbpLead").getLayout().setActiveItem("grdLead");
+                                Ext.getCmp("grdLead").getStore().filter("status","quoting");
+                                Ext.getCmp("grdLead").getStore().reload();
+                            ',
+                            'icon' => '/images/icons/icons8/16px/icons8-money-16.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ],
+                        (object)[
+                            'text' => 'Won Leads',
+                            'onclick' => '
+                                Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
+                                Ext.getCmp("tbpLead").getLayout().setActiveItem("grdLead");
+                                Ext.getCmp("grdLead").getStore().filter("status","closed - won");
+                                Ext.getCmp("grdLead").getStore().reload();
+                            ',
+                            'icon' => '/images/icons/icons8/16px/icons8-money-16.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ],
+                        (object)[
+                            'text' => 'Lost Leads',
+                            'onclick' => '
+                                Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
+                                Ext.getCmp("tbpLead").getLayout().setActiveItem("grdLead");
+                                Ext.getCmp("grdLead").getStore().filter("status","closed - lost");
+                                Ext.getCmp("grdLead").getStore().reload();
+                            ',
                             'icon' => '/images/icons/icons8/16px/icons8-money-16.png',
                             'cls' => 'pointer',
                             'leaf' => true,

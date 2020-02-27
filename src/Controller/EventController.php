@@ -65,6 +65,52 @@ class EventController extends AbstractController
     }
 
     /**
+     * @Route("/addnew", name="event_new2", methods={"GET","POST"})
+     */
+    public function new2(Request $request): Response
+    {
+        $base = new BaseController();
+        $base->container = $this->container;
+        return $base->new($request, Event::class, EventType::class);
+    }
+
+    /**
+     * @Route("/addevents/{type}/{id}", name="event_add_to", methods={"GET"})
+     */
+    public function addEvents(Request $request): Response
+    {
+        $success = FALSE;
+        $type = $request->get('type');
+        $id = $request->get('id');
+        $events = $request->get('events');
+
+        $eventIds = explode(',', $events);
+
+        $em = $this->getDoctrine()->getManager();
+        $className = Util::getClassName($type);
+        $repo = $em->getRepository($className);
+
+        $eventRepo = $em->getRepository(Event::class);
+
+        $object = $repo->find($id);
+
+        try{
+            foreach ($eventIds as $eventId) {
+                $event = $eventRepo->find($eventId);
+                $object->addEvent($event);
+            }
+            $success = TRUE;
+        }catch(Exception $ex){
+            $success = FALSE;
+        }
+
+        $returnArray = [
+            "success" => $success,
+        ];
+        return new JsonResponse($returnArray);
+    }
+
+    /**
      * @Route("/fetchby/{type}/{id}", name="event_by_person", methods={"GET"})
      */
     public function eventsByType(Request $request): Response
@@ -179,6 +225,6 @@ class EventController extends AbstractController
 
         return new JsonResponse([
             'success'=>false,
-        ]);
+        ], 400);
     }
 }

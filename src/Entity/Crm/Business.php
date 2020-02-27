@@ -125,7 +125,7 @@ class Business
     private $email;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Note")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Crm\Note")
      * @ORM\JoinTable(name="business_notes",
      *     joinColumns={@ORM\JoinColumn(name="business_id", referencedColumnName="id",onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="note_id", referencedColumnName="id",onDelete="CASCADE")}

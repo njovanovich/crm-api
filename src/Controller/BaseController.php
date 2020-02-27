@@ -105,6 +105,8 @@ class BaseController extends AbstractController
         $form = $this->createForm($classType, $object);
         $form->handleRequest($request);
 
+        $serializer = $this->container->get('serializer');
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $object = $form->getData();
@@ -113,8 +115,14 @@ class BaseController extends AbstractController
             $entityManager->persist($object);
             $entityManager->flush();
 
+            $data = [$object];
+
+            $serializedObject = $serializer->serialize($data, 'json');
+            $objectSerialised = json_decode($serializedObject);
+
             return new JsonResponse([
                 'id' => $object->getId(),
+                'data' => $objectSerialised,
                 'success'=>true
             ]);
         }
@@ -185,6 +193,7 @@ class BaseController extends AbstractController
         $extraSelectors = [];
         $columns = [];
         $joinTables = [];
+        $orderSelector = $firstSelector;
         foreach ($classAnnotations as $property=>$annotations) {
             $isJoin = FALSE;
             $joinClassName = "";
@@ -215,17 +224,20 @@ class BaseController extends AbstractController
         }
 
         // do the extra tables if isDeep
-        if ($searchDeep) {
-            foreach ($joinTables as $extraSelector=>$joinTable) {
-                $joinClassName = $joinTable['className'];
-                $classAnnotations = $this->getAnnotations($joinClassName);
-                foreach ($classAnnotations as $property=>$annotations) {
-                    foreach ($annotations as $annotation) {
-                        switch (get_class($annotation)) {
-                            case @ORM\Column::class:
+        foreach ($joinTables as $extraSelector=>$joinTable) {
+            $joinClassName = $joinTable['className'];
+            $classAnnotations = $this->getAnnotations($joinClassName);
+            foreach ($classAnnotations as $property=>$annotations) {
+                foreach ($annotations as $annotation) {
+                    switch (get_class($annotation)) {
+                        case @ORM\Column::class:
+                            if ($searchDeep){
                                 $columns[$extraSelector][$property] = $annotation;
-                                break;
-                        }
+                            }
+                            if ($orderSelector == $firstSelector && in_array($property, array_keys($sort))) {
+                                $orderSelector = $extraSelector;
+                            }
+                            break;
                     }
                 }
             }
@@ -238,6 +250,7 @@ class BaseController extends AbstractController
 
         // build the where clause
         $whereSql = "";
+        $parameters = [];
         if (count($where)){
             $whereKeys = array_keys($where);
             $whereValues = array_values($where);
@@ -250,7 +263,8 @@ class BaseController extends AbstractController
                             if ($searchIn) {
                                 $searchTerm = "%" . $whereValues[0] . "%";
                             }
-                            $whereSqlArray[] = " $selector.$property LIKE '$searchTerm' ";;
+                            $parameters["$selector$property"] = $searchTerm;
+                            $whereSqlArray[] = " $selector.$property LIKE :$selector$property ";;
                         }
                     }
                 }
@@ -266,29 +280,35 @@ class BaseController extends AbstractController
                                     if ($searchIn) {
                                         $searchTerm = "%" . $value . "%";
                                     }
-                                    $whereSqlArray[] = " $selector.$property LIKE '$value'";
+                                    $parameters["$selector-$property"] = $searchTerm;
+                                    $whereSqlArray[] = " $selector.$property LIKE :$selector$property";
                                 } else if ($field->type == "integer") {
-                                    $whereSqlArray[] = " $selector.$property = '$value'";
+                                    $parameters["$selector$property"] = $value;
+                                    $whereSqlArray[] = " $selector.$property = :$selector$property";
                                 }
                             }
                         }
                     }
                 }
-                $whereSql = implode(' AND ', $whereSqlArray);
+                // todo: this needs to be AND not OR, hack for now
+                $whereSql = implode(' OR ', $whereSqlArray);
             }
 
             $dql .= " WHERE " . $whereSql;
         }
         if (count($sort)) {
             $sortArrayKeys = array_keys($sort);
-            $dql .= " ORDER BY $firstSelector." . $sortArrayKeys[0] . " " . $sort[$sortArrayKeys[0]];
+            $dql .= " ORDER BY $orderSelector." . $sortArrayKeys[0] . " " . $sort[$sortArrayKeys[0]];
         }
 
         $query = $em->createQuery($dql);
+        foreach ($parameters as $k=>$value) {
+            $query->setParameter($k, $value);
+        }
         if (count($limit)){
             $start = $limit["start"];
             $pageSize = $limit["pageSize"];
-            $query->setMaxResults($pageSize);
+            $query->setMaxResults((int)$pageSize);
             $query->setFirstResult($start);
         }
 
@@ -300,6 +320,9 @@ class BaseController extends AbstractController
             $dql .= " WHERE $whereSql";
         }
         $query = $em->createQuery($dql);
+        foreach ($parameters as $k=>$value) {
+            $query->setParameter($k, $value);
+        }
         $countResult = $query->getArrayResult();
         $count = $countResult[0]['count'];
 
