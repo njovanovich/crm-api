@@ -286,22 +286,6 @@ class Job
     /**
      * @return mixed
      */
-    public function getClosedDate()
-    {
-        return $this->closedDate;
-    }
-
-    /**
-     * @param mixed $closedDate
-     */
-    public function setClosedDate($closedDate): void
-    {
-        $this->closedDate = $closedDate;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getJobId()
     {
         return $this->jobId;

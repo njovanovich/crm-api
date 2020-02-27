@@ -52,7 +52,7 @@ class Person
     protected $updatedBy;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
      */
     private $lastName;
 
@@ -62,7 +62,7 @@ class Person
     private $middleName;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255,nullable=true)
      */
     private $firstName;
 

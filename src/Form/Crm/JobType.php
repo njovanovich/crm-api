@@ -14,7 +14,6 @@ class JobType extends AbstractType
     {
         $builder
             ->add('id')
-            ->add('jobId')
             ->add('name')
             ->add('deliveryDate', DateType::class, [
                 'widget' => 'single_text',

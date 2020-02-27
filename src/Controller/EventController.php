@@ -99,6 +99,8 @@ class EventController extends AbstractController
                 $event = $eventRepo->find($eventId);
                 $object->addEvent($event);
             }
+            $em->persist($object);
+            $em->flush();
             $success = TRUE;
         }catch(Exception $ex){
             $success = FALSE;
@@ -163,14 +165,7 @@ class EventController extends AbstractController
             $orderBy = [];
         }
 
-        $encoder = new JsonEncoder();
-        $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                return $object->getId();
-            },
-        ];
-        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
-        $serializer = new Serializer([$normalizer], [$encoder]);
+        $serializer = $this->container->get('serializer');
 
         try{
             $data = $base->findIn(Event::class, $inArray, $where, $limit, $orderBy);

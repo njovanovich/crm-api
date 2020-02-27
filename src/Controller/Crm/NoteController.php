@@ -103,7 +103,7 @@ class NoteController extends AbstractController
     }
 
     /**
-     * @Route("/addnotes/{type}/{id}", name="event_add_to", methods={"GET"})
+     * @Route("/addnotes/{type}/{id}", name="note_add_to", methods={"GET"})
      */
     public function addNotes(Request $request): Response
     {
@@ -118,15 +118,18 @@ class NoteController extends AbstractController
         $className = Util::getClassName($type);
         $repo = $em->getRepository($className);
 
-        $eventRepo = $em->getRepository(Note::class);
+        $noteRepo = $em->getRepository(Note::class);
 
         $object = $repo->find($id);
 
         try{
             foreach ($noteIds as $noteId) {
-                $note = $eventRepo->find($noteId);
+                $note = $noteRepo->find($noteId);
                 $object->addNote($note);
+
             }
+            $em->persist($object);
+            $em->flush();
             $success = TRUE;
         }catch(Exception $ex){
             $success = FALSE;

@@ -280,7 +280,7 @@ class BaseController extends AbstractController
                                     if ($searchIn) {
                                         $searchTerm = "%" . $value . "%";
                                     }
-                                    $parameters["$selector-$property"] = $searchTerm;
+                                    $parameters["$selector$property"] = $searchTerm;
                                     $whereSqlArray[] = " $selector.$property LIKE :$selector$property";
                                 } else if ($field->type == "integer") {
                                     $parameters["$selector$property"] = $value;
