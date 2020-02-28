@@ -149,7 +149,8 @@ class Event
      */
     public function getDateTime()
     {
-        return $this->dateTime;
+        $datetime = $this->dateTime;
+        return $datetime;
     }
 
     /**
