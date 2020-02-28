@@ -197,7 +197,7 @@ class BaseController extends AbstractController
         $extraSelectors = [];
         $columns = [];
         $joinTables = [];
-        $orderSelector = $firstSelector;
+        $orderSelector = "";
         foreach ($classAnnotations as $property=>$annotations) {
             $isJoin = FALSE;
             $joinClassName = "";
@@ -213,7 +213,11 @@ class BaseController extends AbstractController
                         break;
                     case @ORM\Column::class:
                         $columns[$firstSelector][$property] = $annotation;
+                        if(in_array($property, array_keys($sort))){
+                            $orderSelector = $firstSelector;
+                        }
                         break;
+
                 }
             }
             if ($isJoin) {
@@ -238,7 +242,7 @@ class BaseController extends AbstractController
                             if ($searchDeep){
                                 $columns[$extraSelector][$property] = $annotation;
                             }
-                            if ($orderSelector == $firstSelector && in_array($property, array_keys($sort))) {
+                            if ($orderSelector == "" && in_array($property, array_keys($sort))) {
                                 $orderSelector = $extraSelector;
                             }
                             break;

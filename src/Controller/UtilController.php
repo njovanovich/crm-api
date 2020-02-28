@@ -122,6 +122,16 @@ class UtilController extends AbstractController
                     'expanded' => true,
                     'children' => [
                         (object)[
+                            'text' => 'Make Calls',
+                            'onclick' => '
+                                var w=fetchOrCreate("wndMakeCall");
+                                w.show();
+                            ',
+                            'icon' => '/images/icons/png/16x16/Mobile.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ],
+                        (object)[
                             'text' => 'All Leads',
                             'onclick' => '
                                 Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
