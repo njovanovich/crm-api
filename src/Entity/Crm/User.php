@@ -32,14 +32,15 @@ class User
      */
     protected $id;
 
-/**
+    /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     protected $created;
 
     /**
-     * @ORM\Column(type="datetime",columnDefinition="TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+     * @ORM\Column(type="datetime")
+	 * @Gedmo\Timestampable(on="update")
      */
     protected $updated;
 
