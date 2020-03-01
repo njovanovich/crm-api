@@ -57,15 +57,19 @@ class User
     protected $updatedBy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
-     * @ORM\JoinColumn(name="person", referencedColumnName="id")*
+     * @ORM\Column(length=255)
      */
-    protected $person;
+    private $email;
 
     /**
      * @ORM\Column(length=255)
      */
-    private $username;
+    private $name;
+
+    /**
+     * @ORM\Column(length=255)
+     */
+    private $userlevel;
 
     /**
      * @ORM\Column(length=255)
@@ -73,30 +77,9 @@ class User
     private $password;
 
     /**
-     * @ORM\Column(name="last_logged_in")
+     * @ORM\Column(name="last_logged_in",nullable=true)
      */
     private $lastLoggedIn;
-
-    /**
-     * @ORM\Column(name="last_ip",length=30)
-     */
-    private $lastIp;
-
-    /**
-     * @return mixed
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param mixed $username
-     */
-    public function setUsername($username): void
-    {
-        $this->username = $username;
-    }
 
     /**
      * @return mixed
@@ -111,7 +94,7 @@ class User
      */
     public function setPassword($password): void
     {
-        $this->password = $password;
+        $this->password = Util::encryptPassword($password);
     }
 
     /**
@@ -128,22 +111,6 @@ class User
     public function setLastLoggedIn($lastLoggedIn): void
     {
         $this->lastLoggedIn = $lastLoggedIn;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastIp()
-    {
-        return $this->lastIp;
-    }
-
-    /**
-     * @param mixed $lastIp
-     */
-    public function setLastIp($lastIp): void
-    {
-        $this->lastIp = $lastIp;
     }
 
     /**
@@ -229,17 +196,51 @@ class User
     /**
      * @return mixed
      */
-    public function getPerson()
+    public function getEmail()
     {
-        return $this->person;
+        return $this->email;
     }
 
     /**
-     * @param mixed $person
+     * @param mixed $email
      */
-    public function setPerson($person): void
+    public function setEmail($email): void
     {
-        $this->person = $person;
+        $this->email = $email;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserlevel()
+    {
+        return $this->userlevel;
+    }
+
+    /**
+     * @param mixed $userlevel
+     */
+    public function setUserlevel($userlevel): void
+    {
+        $this->userlevel = $userlevel;
+    }
+
+
 
 }

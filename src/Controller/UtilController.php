@@ -48,18 +48,35 @@ class UtilController extends AbstractController
             [
                 'name' => 'Users',
                 'image' => '/images/icons/png/16x16/User2.png',
-                'onclick' => '',
+                'onclick' => '
+                    Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");
+                    Ext.getCmp("tbpAdmin").getLayout().setActiveItem("grdUser");
+                ',
             ],
             [
                 'name' => 'Reports',
                 'image' => '/images/icons/png/16x16/Piechart.png',
-                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReport");',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
             ],
             [
                 'name' => 'Admin',
                 'image' => '/images/icons/icons8/16px/icons8-admin-settings-male-16.png',
                 'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
-            ]];
+            ],
+            [
+            'name' => 'Logout',
+            'image' => '/images/icons/png/16x16/Key.png',
+            'onclick' => '
+                    Ext.Ajax.request({
+                        url: "/api/user/logout",
+                        method: "GET",
+                        success: function(){
+                            location.reload();
+                        }
+                    });
+            ',
+        ]
+        ];
 
         $response = new JsonResponse();
         $response->setData($objects);
@@ -190,6 +207,16 @@ class UtilController extends AbstractController
                             'icon' => '/images/icons/icons8/16px/icons8-money-16.png',
                             'cls' => 'pointer',
                             'leaf' => true,
+                        ],
+                        (object)[
+                            'text' => 'Import Leads',
+                            'onclick' => '
+                                var window = fetchOrCreate("wndImport");
+                                window.show();
+                            ',
+                            'icon' => '/images/icons/png/16x16/Database.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
                         ]
                     ]
                 ],
@@ -257,17 +284,32 @@ class UtilController extends AbstractController
             [
                 'name'=>'Users',
                 'image'=>'/images/icons/png/128x128/User2.png',
-                'onclick'=>'',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");
+                    Ext.getCmp("tbpAdmin").getLayout().setActiveItem("grdUser");',
             ],[
                 'name'=>'Reports',
                 'image'=>'/images/icons/png/128x128/Piechart.png',
-                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReport");',
+                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
             ],
             [
                 'name'=>'Admin',
                 'image'=>'/images/icons/icons8/64px/icons8-admin-settings-male-64.png',
                 'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
-             ]];
+            ],
+            [
+                'name'=>'Logout',
+                'image'=>'/images/icons/png/128x128/Key.png',
+                'onclick'=>'
+                    Ext.Ajax.request({
+                        url: "/api/user/logout",
+                        method: "GET",
+                        success: function(){
+                            location.reload();
+                        }
+                    });
+                ',
+            ]
+        ];
 
         $response = new JsonResponse();
         $response->setData($objects);
@@ -283,34 +325,24 @@ class UtilController extends AbstractController
     {
 
         $session = new Session();
-        $session->start();
 
         $csrf = $session->get('csrf');
         if (!$csrf) {
             $csrf = bin2hex(random_bytes(32));
             $session->set('csrf', $csrf);
         }
-        $csrf = $session->get('csrf');
 
         $response = new JsonResponse();
         $object = [
             "csrf" => $csrf,
             "success" => true,
         ];
-        $response->setData();
+        $response->setData($object);
 
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
-    /**
-     * @Route("/login", name="login_user", methods={"GET"})
-     */
-    public function login(): Response
-    {
 
-        $response = new JsonResponse();
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
 }
+

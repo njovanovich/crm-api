@@ -27,9 +27,6 @@ class Util
             case "event":
                 $className = "App\Entity\Event";
                 break;
-            case "call":
-                $className = "App\Entity\Crm\Call";
-                break;
             case "business":
                 $className = "App\Entity\Crm\Business";
                 break;
@@ -48,6 +45,16 @@ class Util
         return $className;
     }
 
+    public static function encryptPassword($password){
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
 
+    public static function checkPassword($password, $encryptedPassword){
+        return password_verify($password, $encryptedPassword);
+    }
+
+    public static function getSetter($fieldName){
+        return "set". ucfirst ($fieldName);
+    }
 
 }

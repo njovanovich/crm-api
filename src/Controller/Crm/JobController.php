@@ -52,6 +52,11 @@ class JobController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        if ($job->getStatus() != "completed"){
+            if($_REQUEST['job']['status'] == "completed") {
+                $job->setCompletedDate(new \DateTime());
+            }
+        }
         return $base->edit($request, $job, JobType::class);
     }
 

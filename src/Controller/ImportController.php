@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @Route("/import")
@@ -24,47 +25,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImportController extends AbstractController
 {
     /**
-     * @Route("/tables", name="get_import_tables", methods={"GET"})
+     * @Route("/schema", name="import_schema", methods={"GET"})
      */
-    public function tables(): Response
+    public function schema(): Response
     {
-        $objects = [
-            [
-                'table' => 'leads',
-                'fields' => [
-                    // lead
-                    'name','amount','status','lead_source','campaign',
-                    // person
-                    'first_name','last_name','middle_name','gender','email',
-                    // business
-                    'abn','name','website','phone','fax','email','acn','misc_codes','number_of_employees','industry','annual_revenue','type',
-                ],
-            ],
-            [
-                'table' => 'accounts',
-                'fields' => ['name',]
-            ],
-            [
-                'table' => 'jobs',
-                'fields' => ['name',]
-            ],
-            [
-                'table' => 'services',
-                'fields' => ['name',]
-            ],
-            [
-                'table' => 'people',
-                'fields' => ['name',]
-            ]];
-
-        return new JsonResponse(['data'=>$objects, 'success'=>true]);
+        $data = "lead[leadSource],lead[amount],lead[campaign],lead[notes],person[firstName],person[lastName],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes]\r\n";
+        return new Response($data,200,[
+            "Content-Type" => "text/csv",
+            'Content-disposition" => "attachment; filename="schema.csv"'
+        ]);
     }
 
     /**
-     * @Route("/import", name="import_table", methods={"GET"})
+     * @Route("/import", name="import_import", methods={"POST"})
      */
-    public function import(): Response
+    public function import(Request $request): Response
     {
+        $form = $this->createFormBuilder()
+            ->add('file', 'file') // If I remove this line data is submitted correctly
+            ->getForm();
+
+        $request = $this->getRequest();
+        $form->bindRequest($request);
+
+        $data = $form->getData();
+
 
     }
 }

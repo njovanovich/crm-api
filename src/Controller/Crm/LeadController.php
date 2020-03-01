@@ -58,6 +58,7 @@ class LeadController extends AbstractController
     public function details(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
+        $serializer = $this->container->get('serializer');
 
         $id = $request->get('id');
 
@@ -88,7 +89,7 @@ class LeadController extends AbstractController
 
                 if ($objects[4]) {
                     $outArray["job_business"] = $objects[2];
-                    $outArray["job_jobId"] = $objects[4]["jobId"];
+                    $outArray["job_jobId"] = $objects[4]["id"];
                     $outArray["job_name"] = $objects[4]["name"];
                     $outArray["job_status"] = $objects[4]["status"];
                     $outArray["job_completedDate"] = $objects[4]["completedDate"];
@@ -97,6 +98,9 @@ class LeadController extends AbstractController
 
             }catch(Exception $exception){}
         }
+
+        $serializedObject = $serializer->serialize($outArray, 'json');
+        $outArray = json_decode($serializedObject);
 
         $objects = [];
         $objects['data'] = $outArray;

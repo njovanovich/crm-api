@@ -92,15 +92,6 @@ class Business
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Address")
-     * @ORM\JoinTable(name="business_addresses",
-     *      joinColumns={@ORM\JoinColumn(name="business_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="address_id", referencedColumnName="id")}
-     *      )
-     */
-    private $addresses;
-
-    /**
      * @ORM\Column()
      */
     private $name;
@@ -324,22 +315,6 @@ class Business
     public function setType($type): void
     {
         $this->type = $type;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAddresses()
-    {
-        return $this->addresses;
-    }
-
-    /**
-     * @param mixed $addresses
-     */
-    public function setAddresses($addresses): void
-    {
-        $this->addresses = $addresses;
     }
 
     /**

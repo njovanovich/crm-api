@@ -35,10 +35,22 @@ class BaseController extends AbstractController
 
     public function __construct(/*Request $request*/)
     {
-        $this->session = new Session();
-        //$this->session->start();
-        $this->csrfToken = $this->session->get('csrf');
-        //$this->request = $request;
+        $session = new Session();
+        $this->csrfToken = $session->get('csrf');
+    }
+
+    public function checkCsrf(){
+        $headers = $this->request->headers->all();
+        if ($headers["x-csrf-token"][0] != $this->csrfToken) {
+            throw new \Exception("Bad CSRF token");
+        }
+    }
+
+    public function checkLogin(){
+        $session = new Session();
+        if (!$session->get('email')) {
+            throw new \Exception("No login credentials");
+        }
     }
 
     public function setRequest($request){
@@ -48,6 +60,13 @@ class BaseController extends AbstractController
     public function index($class, $flags=[]): Response
     {
         $request = $this->request;
+
+        // check CSRF
+        $this->checkCsrf();
+
+        // check login
+        $this->checkLogin();
+
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->container->get('serializer');
 
@@ -109,6 +128,12 @@ class BaseController extends AbstractController
         $form = $this->createForm($classType, $object);
         $form->handleRequest($request);
 
+        // check CSRF
+        $this->checkCsrf();
+
+        // check login
+        $this->checkLogin();
+
         $serializer = $this->container->get('serializer');
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,6 +161,12 @@ class BaseController extends AbstractController
 
     public function show($object, $class, $token=''): Response
     {
+        // check CSRF
+        $this->checkCsrf();
+
+        // check login
+        $this->checkLogin();
+
         $serializer = $this->container->get('serializer');
         $serializedObject = $serializer->serialize($object, 'json');
         $responseData = [
@@ -154,6 +185,12 @@ class BaseController extends AbstractController
         $form = $this->createForm($objectFormClass, $object);
         $form->handleRequest($request);
 
+        // check CSRF
+        $this->checkCsrf();
+
+        // check login
+        $this->checkLogin();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($object);
             $this->getDoctrine()->getManager()->flush();
@@ -166,6 +203,12 @@ class BaseController extends AbstractController
 
     public function delete(Request $request, $object, $token=''): Response
     {
+        // check CSRF
+        $this->checkCsrf();
+
+        // check login
+        $this->checkLogin();
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($object);
         $entityManager->flush();
@@ -484,5 +527,10 @@ class BaseController extends AbstractController
             }
         }
         return $propertyAnnotations;
+    }
+
+    public function getUserlevel(){
+        $session = new Session();
+        return $session->get('userlevel');
     }
 }
