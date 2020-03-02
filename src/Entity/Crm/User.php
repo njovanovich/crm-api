@@ -77,7 +77,12 @@ class User
     private $password;
 
     /**
-     * @ORM\Column(name="last_logged_in",nullable=true)
+     * @ORM\Column(name="reset_password",type="integer",nullable=true)
+     */
+    private $resetPassword;
+
+    /**
+     * @ORM\Column(name="last_logged_in",type="datetime",nullable=true)
      */
     private $lastLoggedIn;
 
@@ -239,6 +244,22 @@ class User
     public function setUserlevel($userlevel): void
     {
         $this->userlevel = $userlevel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResetPassword()
+    {
+        return $this->resetPassword;
+    }
+
+    /**
+     * @param mixed $resetPassword
+     */
+    public function setResetPassword($resetPassword): void
+    {
+        $this->resetPassword = $resetPassword;
     }
 
 

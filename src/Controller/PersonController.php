@@ -35,16 +35,18 @@ class PersonController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->new($request, "App\Entity\Person", "App\Form\PersonType");
     }
 
     /**
      * @Route("/{id}", name="person_show", methods={"GET"}, requirements={"id":"\d+"})
      */
-    public function show(Person $person): Response
+    public function show(Person $person, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($person, Person::class);
     }
 
@@ -55,6 +57,7 @@ class PersonController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->edit($request, $person, PersonType::class);
     }
 
@@ -65,6 +68,7 @@ class PersonController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->delete($request, $person, $token='');
     }
 
@@ -73,6 +77,12 @@ class PersonController extends AbstractController
      */
     public function addnote(Request $request, Person $person): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $note = new Note();
@@ -94,6 +104,12 @@ class PersonController extends AbstractController
      */
     public function search(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $entityManager = $this->getDoctrine()->getManager();
         $qb = $entityManager->createQueryBuilder();
         $searchTerm = $request->get('searchTerm');
@@ -145,6 +161,13 @@ class PersonController extends AbstractController
      */
     public function create(Request $request): Response
     {
+
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->container->get('serializer');
 

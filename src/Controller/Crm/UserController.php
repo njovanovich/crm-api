@@ -41,6 +41,8 @@ class UserController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
 
 
         $serializer = $this->container->get('serializer');
@@ -108,6 +110,80 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/password/reset", name="user_password_reset", methods={"POST"})
+     */
+    public function passwordReset(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(User::class);
+
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
+        $data = ['success' => FALSE];
+
+        $session = new Session();
+        $email = $session->get('email');
+
+        $password = $request->get('password');
+
+        $user = $repo->findBy(["email"=>$email]);
+        if ($user && $user[0]) {
+            $user = $user[0];
+            $user->setPassword($password);
+            $user->setResetPassword(0);
+            $em->persist($user);
+            $em->flush();
+            $data['success'] = TRUE;
+        }
+
+        return new JsonResponse($data);
+
+    }
+
+        /**
+     * @Route("/password/reminder", name="user_password_reminder", methods={"POST"})
+     */
+    public function passwordReminder(Request $request, \Swift_Mailer $mailer): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(User::class);
+
+        $data = ['success'=>FALSE];
+
+        $email = $request->get('email');
+
+        $user = $repo->findBy(["email"=>$email]);
+        if ($user && $user[0]) {
+            $user = $user[0];
+            $password = bin2hex(random_bytes(10));
+            $user->setPassword($password);
+            $user->setResetPassword(1);
+            $em->persist($user);
+            $em->flush();
+            $message = (new \Swift_Message('Password reset'))
+                ->setFrom('system@leadcrm.com.au')
+                ->setTo($email)
+                ->setBody(
+                    "Your new login credentials are: <br> 
+                    Email: $email <br>
+                    Password: $password <br>
+                    Please reset this on login.
+                    ",
+                    'text/html'
+                )
+            ;
+            $mailer->send($message);
+            $data = ['success'=> TRUE];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
      * @Route("/login", name="user_login", methods={"POST"})
      */
     public function login(Request $request): Response
@@ -134,7 +210,11 @@ class UserController extends AbstractController
             $encryptedPassword = $user->getPassword();
             if (Util::checkPassword($password, $encryptedPassword)) {
                 $data["success"] = TRUE;
+                $data["resetPassword"] = $user->getResetPassword();
                 unset($data["message"]);
+                $user->setLastLoggedIn(new \DateTime("now"));
+                $em->persist($user);
+                $em->flush();
             }
             $session = new Session();
             $session->set('email', $email);

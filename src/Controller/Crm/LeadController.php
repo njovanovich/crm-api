@@ -38,17 +38,18 @@ class LeadController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
-
+        $base->setRequest($request);
         return $base->new($request, Lead::class, LeadType::class);
     }
 
     /**
      * @Route("/{id}", name="crm_lead_show", methods={"GET"})
      */
-    public function show(Lead $lead): Response
+    public function show(Lead $lead, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($lead, Lead::class);
     }
 
@@ -57,6 +58,12 @@ class LeadController extends AbstractController
      */
     public function details(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->container->get('serializer');
 
@@ -116,6 +123,12 @@ class LeadController extends AbstractController
      */
     public function myleads(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $em = $this->getDoctrine()->getManager();
 
         $dql = 'SELECT l,p,b FROM App\Entity\Crm\Lead l
@@ -150,9 +163,7 @@ class LeadController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
-
-        $em = $this->getDoctrine()->getManager();
-
+        $base->setRequest($request);
         return $base->edit($request, $lead, LeadType::class);
     }
 
@@ -161,6 +172,12 @@ class LeadController extends AbstractController
      */
     public function editstatus(Request $request, Lead $lead): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $success = FALSE;
         $em = $this->getDoctrine()->getManager();
 
@@ -186,6 +203,7 @@ class LeadController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
-        return $base->delete($request, $lead, $token='');
+        $base->setRequest($request);
+        return $base->delete($request, $lead);
     }
 }

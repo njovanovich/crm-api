@@ -33,16 +33,18 @@ class QuoteController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->new($request, Quote::class, QuoteType::class);
     }
 
     /**
      * @Route("/{id}", name="crm_quote_show", methods={"GET"})
      */
-    public function show(Quote $quote): Response
+    public function show(Quote $quote, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($quote, Quote::class);
     }
 
@@ -53,6 +55,7 @@ class QuoteController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->edit($request, $quote, QuoteType::class);
     }
 
@@ -63,6 +66,7 @@ class QuoteController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->delete($request, $quote, $token='');
     }
 }

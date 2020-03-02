@@ -36,16 +36,18 @@ class BusinessController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->new($request, "App\Entity\Crm\Business", "App\Form\Crm\BusinessType");
     }
 
     /**
      * @Route("/{id}", name="crm_business_show", methods={"GET"})
      */
-    public function show(Business $business): Response
+    public function show(Business $business, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($business, Business::class);
     }
 
@@ -56,6 +58,7 @@ class BusinessController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->edit($request, $business, BusinessType::class);
     }
 
@@ -66,6 +69,7 @@ class BusinessController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->delete($request, $business, $token='');
     }
 
@@ -74,6 +78,13 @@ class BusinessController extends AbstractController
      */
     public function findBy(Request $request): Response
     {
+
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $entityManager = $this->getDoctrine()->getManager();
         $qb = $entityManager->createQueryBuilder();
         $searchField = $request->get('searchField');
@@ -91,15 +102,6 @@ class BusinessController extends AbstractController
         }
         $qb->orWhere($searchField.' LIKE :' . $searchFieldNoDot);
         $qb->setParameter($searchFieldNoDot, $searchTerm.'%');
-
-        //$qb->orderBy($key, $dir);
-
-//        if (count($limitInfo)) {
-//            $offset = $limitInfo['offset'];
-//            $limit = $limitInfo['limit'];
-//            $qb->setFirstResult( $offset )
-//                ->setMaxResults( $limit );
-//        }
 
         // get the data
         $query = $qb->getQuery();

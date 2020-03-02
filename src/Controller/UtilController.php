@@ -17,8 +17,14 @@ class UtilController extends AbstractController
     /**
      * @Route("/toolbar", name="display_toolbar", methods={"GET"})
      */
-    public function toolbar(): Response
+    public function toolbar(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $objects = [
             [
                 'name' => 'Leads',
@@ -57,13 +63,17 @@ class UtilController extends AbstractController
                 'name' => 'Reports',
                 'image' => '/images/icons/png/16x16/Piechart.png',
                 'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
-            ],
-            [
+            ]
+        ];
+        if ($base->getUserlevel() == 'admin') {
+            $objects[] = [
                 'name' => 'Admin',
                 'image' => '/images/icons/icons8/16px/icons8-admin-settings-male-16.png',
                 'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
-            ],
-            [
+            ];
+        }
+
+        $objects[] = [
             'name' => 'Logout',
             'image' => '/images/icons/png/16x16/Key.png',
             'onclick' => '
@@ -75,7 +85,6 @@ class UtilController extends AbstractController
                         }
                     });
             ',
-        ]
         ];
 
         $response = new JsonResponse();
@@ -90,6 +99,12 @@ class UtilController extends AbstractController
      */
     public function tabs(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $objects = [
             [
                 'id' => 'pnlLead',
@@ -109,10 +124,12 @@ class UtilController extends AbstractController
             [
                 'id' => 'pnlReports',
             ],
-            [
-                'id' => 'pnlAdmin',
-            ],
         ];
+        if ($base->getUserlevel() == 'admin') {
+            $objects[] = [
+                'id' => 'pnlAdmin',
+            ];
+        }
 
         $response = new JsonResponse();
         $response->setData($objects);
@@ -126,6 +143,12 @@ class UtilController extends AbstractController
      */
     public function treemenu(Request $request): Response
     {
+
+        /*$base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();*/
 
         $objects = (object)[
             "success" => true,
@@ -248,8 +271,14 @@ class UtilController extends AbstractController
     /**
      * @Route("/icons", name="display_icons", methods={"GET"})
      */
-    public function icons(): Response
+    public function icons(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $objects = [
             [
                 'name' => 'Make Calls',
@@ -291,12 +320,16 @@ class UtilController extends AbstractController
                 'image'=>'/images/icons/png/128x128/Piechart.png',
                 'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
             ],
-            [
-                'name'=>'Admin',
-                'image'=>'/images/icons/icons8/64px/icons8-admin-settings-male-64.png',
-                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
-            ],
-            [
+        ];
+        if ($base->getUserlevel() == 'admin') {
+            $objects[] = [
+                'name' => 'Admin',
+                'image' => '/images/icons/icons8/64px/icons8-admin-settings-male-64.png',
+                'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");',
+            ];
+        }
+
+        $objects[] = [
                 'name'=>'Logout',
                 'image'=>'/images/icons/png/128x128/Key.png',
                 'onclick'=>'
@@ -308,8 +341,7 @@ class UtilController extends AbstractController
                         }
                     });
                 ',
-            ]
-        ];
+            ];
 
         $response = new JsonResponse();
         $response->setData($objects);

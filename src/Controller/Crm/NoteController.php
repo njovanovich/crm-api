@@ -20,10 +20,11 @@ class NoteController extends AbstractController
     /**
      * @Route("/", name="crm_note_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->index(Note::class);
     }
 
@@ -34,16 +35,18 @@ class NoteController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->new($request, Note::class, NoteType::class);
     }
 
     /**
      * @Route("/{id}", name="crm_note_show", methods={"GET"})
      */
-    public function show(Note $note): Response
+    public function show(Note $note, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($note, Note::class);
     }
 
@@ -54,6 +57,7 @@ class NoteController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->edit($request, $note, NoteType::class);
     }
 
@@ -64,6 +68,7 @@ class NoteController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->delete($request, $note, $token='');
     }
 
@@ -73,6 +78,12 @@ class NoteController extends AbstractController
     public function addNote(Request $request): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
 
         $success = FALSE;
 
@@ -107,6 +118,12 @@ class NoteController extends AbstractController
      */
     public function addNotes(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $success = FALSE;
         $type = $request->get('type');
         $id = $request->get('id');
@@ -147,6 +164,12 @@ class NoteController extends AbstractController
      */
     public function getNotes(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $entityManager = $this->getDoctrine()->getManager();
         $type = $request->get('type');
         $id = $request->get('id');
@@ -179,6 +202,12 @@ class NoteController extends AbstractController
      */
     public function searchNotes(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $success = false;

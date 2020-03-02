@@ -16,8 +16,14 @@ class ReportController extends AbstractController
     /**
      * @Route("/leads", name="reports_leads", methods={"GET"})
      */
-    public function leads(): Response
+    public function leads(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $em = $this->getDoctrine()->getManager();
 
         $dql = 'SELECT count(l), l.status from \App\Entity\Crm\Lead l GROUP BY l.status';
@@ -45,8 +51,14 @@ class ReportController extends AbstractController
     /**
      * @Route("/jobs", name="reports_jobs", methods={"GET"})
      */
-    public function jobs(): Response
+    public function jobs(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->container->get('serializer');
 

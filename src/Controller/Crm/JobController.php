@@ -33,16 +33,18 @@ class JobController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->new($request, "App\Entity\Crm\Job", "App\Form\Crm\JobType");
     }
 
     /**
      * @Route("/{id}", name="crm_job_show", methods={"GET"})
      */
-    public function show(Job $job): Response
+    public function show(Job $job, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($job, Job::class);    }
 
     /**
@@ -52,6 +54,7 @@ class JobController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         if ($job->getStatus() != "completed"){
             if($_REQUEST['job']['status'] == "completed") {
                 $job->setCompletedDate(new \DateTime());
@@ -67,6 +70,7 @@ class JobController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->delete($request, $job, $token='');
     }
 }

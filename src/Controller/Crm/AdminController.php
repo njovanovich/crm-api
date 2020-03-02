@@ -21,7 +21,13 @@ class AdminController extends AbstractController
     /**
      * @Route("/", name="admin_index", methods={"GET"})
      */
-    public function index(){
+    public function index(Request $request){
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $success = TRUE;
         $data = [];
         $yamlFile = __DIR__ . '/../../../config/leadcrm.yaml';
@@ -43,6 +49,12 @@ class AdminController extends AbstractController
      * @Route("/savesettings", name="admin_save_settings", methods={"POST"})
      */
     public function savesettings(Request $request){
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         $settings = json_decode($request->get('settings'), 1);
         $yamlFile = __DIR__ . '/../../../config/leadcrm.yaml';
         $yaml = [];

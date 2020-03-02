@@ -27,20 +27,22 @@ class EventController extends AbstractController
     /**
      * @Route("/", name="event_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->index(Event::class);
     }
 
     /**
      * @Route("/{id}", name="event_show", methods={"GET"})
      */
-    public function show(Event $event): Response
+    public function show(Event $event, Request $request): Response
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->show($event, Event::class);
     }
 
@@ -51,6 +53,7 @@ class EventController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->edit($request, $event, EventType::class);
     }
 
@@ -61,6 +64,7 @@ class EventController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->delete($request, $event, $token='');
     }
 
@@ -71,6 +75,7 @@ class EventController extends AbstractController
     {
         $base = new BaseController();
         $base->container = $this->container;
+        $base->setRequest($request);
         return $base->new($request, Event::class, EventType::class);
     }
 
@@ -79,6 +84,12 @@ class EventController extends AbstractController
      */
     public function addEvents(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $success = FALSE;
         $type = $request->get('type');
         $id = $request->get('id');
@@ -117,6 +128,12 @@ class EventController extends AbstractController
      */
     public function eventsByType(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $success = FALSE;
         $type = $request->get('type');
         $id = $request->get('id');
@@ -189,6 +206,12 @@ class EventController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
         $entityManager = $this->getDoctrine()->getManager();
         $id = $request->get('id');
         $type = $request->get('type');
