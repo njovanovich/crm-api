@@ -13,7 +13,6 @@ namespace App\Controller;
 
 use App\Entity\Crm\AdminProperties;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -266,6 +265,13 @@ class BaseController extends AbstractController
             if ($isJoin) {
                 $extraSelector = chr(98 + $selectorIndex++);
                 $joinDql .= " LEFT JOIN $firstSelector.$property $extraSelector \r\n";
+
+                if ($property == "notes") {
+                    $thisSelector = "notesCreatedBy";
+                    $joinDql .= " LEFT JOIN $extraSelector.createdBy $thisSelector\r\n";
+                    $extraSelectors[] = $thisSelector;
+                }
+
                 $extraSelectors[] = $extraSelector;
                 $joinTables[$extraSelector] = [
                     "selector" => $extraSelector,

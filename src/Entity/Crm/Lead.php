@@ -354,4 +354,22 @@ class Lead
         $this->events = $events;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner): void
+    {
+        $this->owner = $owner;
+    }
+
+
+
 }

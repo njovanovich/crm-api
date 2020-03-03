@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Crm\User;
 use App\Entity\Crm\Util;
 use App\Entity\Crm\Lead;
 use App\Entity\Event;
@@ -12,12 +13,14 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * @Route("/event")
@@ -77,6 +80,48 @@ class EventController extends AbstractController
         $base->container = $this->container;
         $base->setRequest($request);
         return $base->new($request, Event::class, EventType::class);
+    }
+
+    /**
+     * @Route("/my/events", name="event_my_events", methods={"GET"})
+     */
+    public function myEvents(Request $request): Response
+    {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkCsrf();
+        $base->checkLogin();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $session = new Session();
+        $userId = $session->get('userId');
+
+        $dql = 'SELECT e,p FROM \App\Entity\Event e
+                    LEFT JOIN e.person p 
+                    LEFT JOIN e.createdBy u 
+                    WHERE e.status != \'completed\'
+                        AND u.id=' . $userId . ' 
+                        AND e.dateTime >= CURRENT_DATE() 
+                    ORDER BY e.dateTime ASC';
+
+        $query = $em->createQuery($dql);
+
+        $objects = $query->getArrayResult();
+
+        $serializer = $this->container->get('serializer');
+
+        $objectsJson = $serializer->serialize($objects, "json");
+        $objects = json_decode($objectsJson);
+
+        $data = [
+            "data" => $objects,
+            "success" => TRUE
+        ];
+
+
+        return new JsonResponse($data);
     }
 
     /**
@@ -230,6 +275,14 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $event = $form->getData();
+
+            $session = new Session();
+            $userId = $session->get('userId');
+
+            $userRepo = $entityManager->getRepository(User::class);
+            $user = $userRepo->find($userId);
+
+            $event->setCreatedBy($user);
 
             $entityManager->persist($event);
             $entityManager->persist($object);

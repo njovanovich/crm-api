@@ -3,10 +3,10 @@
 namespace App\Controller\Crm;
 
 use App\Entity\Crm\Lead;
-use App\Entity\Person;
+use App\Entity\Crm\User;
 use App\Form\Crm\LeadType;
 use App\Controller\BaseController;
-use Doctrine\ORM\Query\Expr\Base;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -119,6 +119,33 @@ class LeadController extends AbstractController
     }
 
     /**
+     * @Route("/my/lead/{id}", name="crm_lead_mine_now", methods={"GET"})
+     */
+    public function mylead(Request $request, Lead $lead): Response
+    {
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $session = new Session();
+        $userId = $session->get('userId');
+
+        $repo = $em->getRepository(User::class);
+        $user = $repo->find($userId);
+
+        $lead->setOwner($user);
+        $em->persist($lead);
+        $em->flush();
+
+        return new JsonResponse(["success"=>TRUE]);
+
+    }
+
+    /**
      * @Route("/my/leads", name="crm_lead_mine", methods={"GET"})
      */
     public function myleads(Request $request): Response
@@ -133,8 +160,9 @@ class LeadController extends AbstractController
 
         $dql = 'SELECT l,p,b FROM App\Entity\Crm\Lead l
                         LEFT JOIN l.person p
+                        LEFT JOIN l.owner o
                         LEFT JOIN l.business b
-                    WHERE l.status = \'new\'';
+                    WHERE l.status = \'new\' AND o.id IS NULL';
         $query = $em->createQuery($dql)
             ->setFirstResult($request->get('start'))
             ->setMaxResults($request->get('limit'));

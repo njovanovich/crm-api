@@ -9,9 +9,6 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Name</th>
                 <th>Address1</th>
                 <th>Address2</th>
                 <th>Suburb</th>
@@ -25,9 +22,6 @@
         {% for address in addresses %}
             <tr>
                 <td>{{ address.id }}</td>
-                <td>{{ address.created ? address.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ address.updated ? address.updated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ address.name }}</td>
                 <td>{{ address.address1 }}</td>
                 <td>{{ address.address2 }}</td>
                 <td>{{ address.suburb }}</td>
@@ -41,7 +35,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="11">no records found</td>
+                <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

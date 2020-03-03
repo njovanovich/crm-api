@@ -5,11 +5,13 @@ namespace App\Controller\Crm;
 use App\Entity\Crm\Note;
 use App\Controller\BaseController;
 use App\Entity\Crm\Util;
+use App\Entity\Crm\User;
 use App\Form\Crm\NoteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,7 +38,51 @@ class NoteController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         $base->setRequest($request);
-        return $base->new($request, Note::class, NoteType::class);
+        $base->checkLogin();
+        $base->checkCsrf();
+
+        $note = new Note();
+        $form = $this->createForm(NoteType::class, $note);
+        $form->handleRequest($request);
+
+        // set user
+        try{
+            $session = new Session();
+            $userId = $session->get('userId');
+            $userRepo = $this->getDoctrine()->getRepository(User::class);
+            $user = $userRepo->find($userId);
+            $note->setCreatedBy($user);
+        }catch(\Exception $ex){
+        }
+
+        $serializer = $this->container->get('serializer');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $object = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($object);
+            $entityManager->flush();
+
+            $data = [$object];
+
+            $serializedObject = $serializer->serialize($data, 'json');
+            $objectSerialised = json_decode($serializedObject);
+
+            try{
+                unset($objectSerialised[0]->createdBy->password);
+            }catch(\Exception $ex){}
+
+
+            return new JsonResponse([
+                'id' => $object->getId(),
+                'data' => $objectSerialised,
+                'success'=>true
+            ]);
+        }
+
+        return new JsonResponse(['success'=>false], 400);
     }
 
     /**
@@ -47,6 +93,9 @@ class NoteController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         return $base->show($note, Note::class);
     }
 
@@ -58,6 +107,9 @@ class NoteController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         $base->setRequest($request);
+        $base->checkLogin();
+        $base->checkCsrf();
+
         return $base->edit($request, $note, NoteType::class);
     }
 
@@ -90,6 +142,16 @@ class NoteController extends AbstractController
         $note = new Note();
         $contents = $request->get('contents');
         $note->setContents($contents);
+
+        // set user
+        try{
+            $session = new Session();
+            $userId = $session->get('userId');
+            $userRepo = $this->getDoctrine()->getRepository(User::class);
+            $user = $userRepo->find($userId);
+            $note->setCreatedBy($user);
+        }catch(\Exception $ex){
+        }
 
         try{
             $type = $request->get('type');

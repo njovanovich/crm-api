@@ -14,6 +14,7 @@ namespace App\Entity\Crm;
 
 
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Yaml\Yaml;
 
 class Util
 {
@@ -55,6 +56,15 @@ class Util
 
     public static function getSetter($fieldName){
         return "set". ucfirst ($fieldName);
+    }
+
+    public static function getSetting($settingName){
+        $yamlFile = __DIR__ . '/../../../config/leadcrm.yaml';
+        $yaml = Yaml::parseFile($yamlFile);
+        if (in_array($settingName, array_keys($yaml))) {
+            return $yaml[$settingName];
+        }
+        return "";
     }
 
 }

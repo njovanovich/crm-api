@@ -57,6 +57,12 @@ class Business
     protected $updatedBy;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
+     * @ORM\JoinColumn(name="address", referencedColumnName="id",onDelete="CASCADE")
+     */
+    protected $address;
+
+    /**
      * @ORM\Column(nullable=true)
      */
     private $abn;
@@ -417,4 +423,22 @@ class Business
     {
         $this->notes[] = $note;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address): void
+    {
+        $this->address = $address;
+    }
+
+
 }

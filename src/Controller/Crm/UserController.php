@@ -32,7 +32,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="crm_user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, \Swift_Mailer $mailer): Response
     {
         $object = new User();
         $form = $this->createForm(UserType::class, $object);
@@ -60,6 +60,25 @@ class UserController extends AbstractController
             $serializedObject = $serializer->serialize($data, 'json');
             $objectSerialised = json_decode($serializedObject);
             unset($objectSerialised[0]->password);
+
+            $url = Util::getSetting("url");
+
+            $email = $object->getEmail();
+            $password = $_REQUEST['user']['password'];
+            $body = "";
+            if ($url) {
+                $body = "Website: $url <br><br>";
+            }
+            $body .= "Your new login credentials are: <br> 
+                    Email: $email <br>
+                    Password: $password <br>
+                    ";
+            $message = (new \Swift_Message('User created'))
+                ->setFrom('system@leadcrm.com.au')
+                ->setTo($email)
+                ->setBody($body,'text/html')
+            ;
+            $mailer->send($message);
 
             return new JsonResponse([
                 'id' => $object->getId(),
@@ -164,17 +183,23 @@ class UserController extends AbstractController
             $user->setResetPassword(1);
             $em->persist($user);
             $em->flush();
-            $message = (new \Swift_Message('Password reset'))
-                ->setFrom('system@leadcrm.com.au')
-                ->setTo($email)
-                ->setBody(
-                    "Your new login credentials are: <br> 
+
+            $url = Util::getSetting("url");
+
+            $body = "";
+            if ($url) {
+                $body = "Website: $url <br><br>";
+            }
+            $body .= "Your new login credentials are: <br> 
                     Email: $email <br>
                     Password: $password <br>
                     Please reset this on login.
-                    ",
-                    'text/html'
-                )
+                    ";
+
+            $message = (new \Swift_Message('Password reset'))
+                ->setFrom('system@leadcrm.com.au')
+                ->setTo($email)
+                ->setBody($body, 'text/html')
             ;
             $mailer->send($message);
             $data = ['success'=> TRUE];
@@ -217,6 +242,7 @@ class UserController extends AbstractController
                 $em->flush();
             }
             $session = new Session();
+            $session->set('userId', $user->getId());
             $session->set('email', $email);
             $session->set('userlevel', $user->getUserlevel());
         }

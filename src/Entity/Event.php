@@ -42,13 +42,13 @@ class Event
     protected $updated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
     protected $createdBy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Crm\User")
      * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")*
      */
     protected $updatedBy;
