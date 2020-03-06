@@ -50,21 +50,24 @@ class UtilController extends AbstractController
                 'name' => 'Jobs',
                 'image' => '/images/icons/png/16x16/Gear.png',
                 'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlJob");',
-            ],
-            [
-                'name' => 'Users',
-                'image' => '/images/icons/png/16x16/User2.png',
-                'onclick' => '
-                    Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");
-                    Ext.getCmp("tbpAdmin").getLayout().setActiveItem("grdUser");
-                ',
-            ],
-            [
+            ]
+        ];
+        if ($base->getUserlevel() == 'admin') {
+            $objects[] =
+                [
+                    'name' => 'Users',
+                    'image' => '/images/icons/png/16x16/User2.png',
+                    'onclick' => '
+                        Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");
+                        Ext.getCmp("tbpAdmin").getLayout().setActiveItem("grdUser");
+                    ',
+                    ];
+        }
+        $objects[] = [
                 'name' => 'Reports',
                 'image' => '/images/icons/png/16x16/Piechart.png',
                 'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
-            ]
-        ];
+            ];
         if ($base->getUserlevel() == 'admin') {
             $objects[] = [
                 'name' => 'Admin',
@@ -244,13 +247,70 @@ class UtilController extends AbstractController
                     ]
                 ],
                 (object)[
+                    'text' => 'People',
+                    'onclick' => '',
+                    'leaf' => false,
+                    'children' => [
+                        (object)[
+                            'text' => 'People',
+                            'icon' => '/images/icons/icons8/16px/icons8-people-16.png',
+                            'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlPerson");',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ]
+                    ]
+                ],
+                (object)[
+                    'text' => 'Quotes',
+                    'onclick' => '',
+                    'leaf' => false,
+                    'children' => [
+                        (object)[
+                            'text' => 'Quotes',
+                            'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlQuote");',
+                            'icon' => '/images/icons/png/16x16/DocumentExport.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ]
+                    ]
+                ],
+                (object)[
                     'text' => 'Accounts',
                     'onclick' => '',
                     'leaf' => false,
                     'children' => [
                         (object)[
-                            'text' => 'Accounts2',
-                            'onclick' => '',
+                            'text' => 'Accounts',
+                            'icon' => '/images/icons/png/16x16/Account.png',
+                            'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlBusiness");',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ]
+                    ]
+                ],
+                (object)[
+                    'text' => 'Jobs',
+                    'onclick' => '',
+                    'leaf' => false,
+                    'children' => [
+                        (object)[
+                            'text' => 'Jobs',
+                            'icon' => '/images/icons/png/16x16/Gear.png',
+                            'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlJob");',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ]
+                    ]
+                ],
+                (object)[
+                    'text' => 'Reports',
+                    'onclick' => '',
+                    'leaf' => false,
+                    'children' => [
+                        (object)[
+                            'text' => 'Reports',
+                            'icon' => '/images/icons/png/16x16/Piechart.png',
+                            'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
                             'cls' => 'pointer',
                             'leaf' => true,
                         ]
@@ -259,7 +319,6 @@ class UtilController extends AbstractController
            ]
         ];
 
-        //$content = $request->get('callback') . "(".json_encode($objects, true).");";
         $content = json_encode($objects);
         $response = new Response($content);
 
@@ -309,18 +368,23 @@ class UtilController extends AbstractController
                 'name'=>'People',
                 'image'=>'/images/icons/icons8/64px/icons8-people-64.png',
                 'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlPerson");',
-            ],
-            [
-                'name'=>'Users',
-                'image'=>'/images/icons/png/128x128/User2.png',
-                'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");
+            ]
+        ];
+        if ($base->getUserlevel() == 'admin') {
+            $objects[] =
+                [
+                    'name' => 'Users',
+                    'image' => '/images/icons/png/128x128/User2.png',
+                    'onclick' => 'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlAdmin");
                     Ext.getCmp("tbpAdmin").getLayout().setActiveItem("grdUser");',
-            ],[
+                ];
+        }
+        $objects[] =[
                 'name'=>'Reports',
                 'image'=>'/images/icons/png/128x128/Piechart.png',
                 'onclick'=>'Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlReports");',
-            ],
-        ];
+            ];
+
         if ($base->getUserlevel() == 'admin') {
             $objects[] = [
                 'name' => 'Admin',
@@ -375,6 +439,31 @@ class UtilController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/ping", name="ping", methods={"GET"})
+     */
+    public function ping(Request $request): Response
+    {
 
+        $base = new BaseController();
+        $base->container = $this->container;
+        $base->setRequest($request);
+
+        $javascript = "";
+        try{
+            $base->checkLogin();
+            $base->checkCsrf();
+        }catch(\Exception $ex){
+            $javascript = "location.reload();";
+        }
+
+        $data = [
+            "success" => TRUE,
+            "javascript" => $javascript,
+        ];
+
+        return new JsonResponse($data);
+
+    }
 }
 
