@@ -52,6 +52,12 @@ class Person
      */
     protected $updatedBy;
 
+
+    /**
+     * @ORM\Column(length=20,nullable=true)
+     */
+    private $title;
+
     /**
      * @ORM\Column(length=255,nullable=true)
      */
@@ -83,6 +89,11 @@ class Person
      * @ORM\Column(length=255,name="phone",nullable=true)
      */
     private $phone;
+
+    /**
+     * @ORM\Column(length=255,name="job_title",nullable=true)
+     */
+    private $jobTitle;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", fetch="EAGER")
@@ -344,5 +355,39 @@ class Person
     {
         $this->name = $name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJobTitle()
+    {
+        return $this->jobTitle;
+    }
+
+    /**
+     * @param mixed $jobTitle
+     */
+    public function setJobTitle($jobTitle): void
+    {
+        $this->jobTitle = $jobTitle;
+    }
+
+
 
 }

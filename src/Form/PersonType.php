@@ -13,9 +13,11 @@ class PersonType extends AbstractType
     {
         $builder
             ->add('id')
+            ->add('title')
             ->add('lastName')
             ->add('middleName')
             ->add('firstName')
+            ->add('jobTitle')
             ->add('gender')
             ->add('phone')
             ->add('email')
