@@ -25,6 +25,9 @@ class Util
             case "person":
                 $className = "App\Entity\Person";
                 break;
+            case "address":
+                $className = "App\Entity\Address";
+                break;
             case "event":
                 $className = "App\Entity\Event";
                 break;

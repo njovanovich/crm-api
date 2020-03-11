@@ -35,13 +35,16 @@ class ImportController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         $base->setRequest($request);
-        $base->checkCsrf();
+        //$base->checkCsrf();
         $base->checkLogin();
 
-        $data = "lead[leadSource],lead[amount],lead[campaign],lead[notes],person[firstName],person[lastName],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes]\r\n";
+        $data = "lead[leadSource],lead[amount],lead[campaign],lead[notes],person[title],person[firstName],person[lastName],person[jobTitle],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes],address[address1],address[address2],addess[suburb],addess[state],addess[postcode],addess[country]\r\n";
         return new Response($data,200,[
-            "Content-Type" => "text/csv",
-            'Content-disposition" => "attachment; filename="schema.csv"'
+            'Cache-Control' => 'private',
+            'Content-Type' => 'application/ms-excel',
+            'Content-Disposition' => 'attachment; filename="schema.csv"',
+            "Pragma"=>"public",
+            'Expires' => 'Mon, 26 Jul 1997 05:00:00 GMT'
         ]);
     }
 
@@ -102,14 +105,20 @@ class ImportController extends AbstractController
                                     $note->setContents($value);
                                     $em->persist($note);
                                     $object->$setter([$note]);
-                                } else {
+                                } {
                                     $object->$setter($value);
                                 }
                             }
                             $outObjects[$objectName] = $object;
                         }
+                        if ($outObjects["address"]) {
+                            $outObjects["business"]->setAddress($outObjects["address"]);
+                            $em->persist($outObjects["address"]);
+                        }
+
                         $em->persist($outObjects["business"]);
                         $em->persist($outObjects["person"]);
+
                         $outObjects["lead"]->setPerson($outObjects["person"]);
                         $outObjects["lead"]->setBusiness($outObjects["business"]);
                         $outObjects["lead"]->setStatus('new');
