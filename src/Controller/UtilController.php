@@ -450,7 +450,7 @@ class UtilController extends AbstractController
         $base->setRequest($request);
 
         $javascript = "";
-        try{
+        try {
             $base->checkLogin();
             $base->checkCsrf();
         }catch(\Exception $ex){

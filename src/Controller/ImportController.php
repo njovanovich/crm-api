@@ -38,7 +38,7 @@ class ImportController extends AbstractController
         //$base->checkCsrf();
         $base->checkLogin();
 
-        $data = "lead[leadSource],lead[amount],lead[campaign],lead[notes],person[title],person[firstName],person[lastName],person[jobTitle],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes],address[address1],address[address2],addess[suburb],addess[state],addess[postcode],addess[country]\r\n";
+        $data = "lead[leadSource],lead[leadId],lead[amount],lead[campaign],lead[notes],person[title],person[firstName],person[lastName],person[jobTitle],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes],address[address1],address[address2],addess[suburb],addess[state],addess[postcode],addess[country]\r\n";
         return new Response($data,200,[
             'Cache-Control' => 'private',
             'Content-Type' => 'application/ms-excel',
@@ -56,8 +56,8 @@ class ImportController extends AbstractController
         $base = new BaseController();
         $base->container = $this->container;
         $base->setRequest($request);
-        $base->checkCsrf();
-        $base->checkLogin();
+//        $base->checkCsrf();
+//        $base->checkLogin();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -124,7 +124,9 @@ class ImportController extends AbstractController
                         $outObjects["lead"]->setStatus('new');
                         $em->persist($outObjects["lead"]);
                         $success++;
-                    }catch(\Exception $ex){$failed++;}
+                    }catch(\Exception $ex){
+                        $failed++;
+                    }
                 }
 
                 $rowNumber++;

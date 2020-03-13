@@ -22,8 +22,10 @@ class AppBundle extends Bundle
         parent::boot();
         $yamlArray = Yaml::parseFile(__DIR__ . '/../../config/leadcrm.yaml');
         $timezone = 'Australia/Sydney';
-        if (in_array("timezone", array_keys($yamlArray))){
-            $timezone = $yamlArray["timezone"];
+        if (is_array($yamlArray )) {
+            if (in_array("timezone", array_keys($yamlArray))){
+                $timezone = $yamlArray["timezone"];
+            }
         }
         date_default_timezone_set($timezone);
     }

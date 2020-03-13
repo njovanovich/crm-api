@@ -65,6 +65,11 @@ class Lead
     private $owner;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private $leadId;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crm\Business",fetch="EAGER")
      * @ORM\JoinColumn(name="business", referencedColumnName="id",nullable=true,onDelete="SET NULL")
      */
