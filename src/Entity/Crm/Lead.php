@@ -375,6 +375,22 @@ class Lead
         $this->owner = $owner;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getLeadId()
+    {
+        return $this->leadId;
+    }
+
+    /**
+     * @param mixed $leadId
+     */
+    public function setLeadId($leadId): void
+    {
+        $this->leadId = $leadId;
+    }
+
 
 
 }

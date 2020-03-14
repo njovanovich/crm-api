@@ -13,6 +13,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +39,7 @@ class ImportController extends AbstractController
         //$base->checkCsrf();
         $base->checkLogin();
 
-        $data = "lead[leadSource],lead[leadId],lead[amount],lead[campaign],lead[notes],person[title],person[firstName],person[lastName],person[jobTitle],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes],address[address1],address[address2],addess[suburb],addess[state],addess[postcode],addess[country]\r\n";
+        $data = "lead[leadSource],lead[leadId],lead[amount],lead[campaign],lead[notes],person[title],person[firstName],person[lastName],person[jobTitle],person[gender],person[email],person[phone],person[notes],business[name],business[phone],business[email],business[website],business[abn],business[acn],business[numberOfEmployees],business[industry],business[annualRevenue],business[notes],address[address1],address[address2],address[suburb],addrees[state],address[postcode],address[country]\r\n";
         return new Response($data,200,[
             'Cache-Control' => 'private',
             'Content-Type' => 'application/ms-excel',
@@ -96,31 +97,40 @@ class ImportController extends AbstractController
 
                         $outObjects = [];
                         foreach ($objects as $objectName=>$data) {
-                            $className = Util::getClassName($objectName);
-                            $object = new $className();
-                            foreach ($data as $fieldName=>$value) {
-                                $setter = Util::getSetter($fieldName);
-                                if ($fieldName == "notes") {
-                                    $note = new \App\Entity\Crm\Note();
-                                    $note->setContents($value);
-                                    $em->persist($note);
-                                    $object->$setter([$note]);
-                                } {
-                                    $object->$setter($value);
+                            try{
+                                $className = Util::getClassName($objectName);
+                                $object = new $className();
+                                foreach ($data as $fieldName=>$value) {
+                                    $setter = Util::getSetter($fieldName);
+                                    if ($fieldName == "notes") {
+                                        $note = new \App\Entity\Crm\Note();
+                                        $note->setContents($value);
+                                        $em->persist($note);
+                                        $object->$setter([$note]);
+                                    } {
+                                        $object->$setter($value);
+                                    }
                                 }
+                            }catch(Exception $ex){
+                                $message = $ex->getMessage();
                             }
                             $outObjects[$objectName] = $object;
                         }
-                        if ($outObjects["address"]) {
+                        if (in_array("address", array_keys($outObjects)) &&
+                                in_array("business", array_keys($outObjects))) {
                             $outObjects["business"]->setAddress($outObjects["address"]);
                             $em->persist($outObjects["address"]);
                         }
 
-                        $em->persist($outObjects["business"]);
-                        $em->persist($outObjects["person"]);
+                        if (in_array("business", array_keys($outObjects))) {
+                            $em->persist($outObjects["business"]);
+                            $outObjects["lead"]->setBusiness($outObjects["business"]);
+                        }
 
-                        $outObjects["lead"]->setPerson($outObjects["person"]);
-                        $outObjects["lead"]->setBusiness($outObjects["business"]);
+                        if (in_array("person", array_keys($outObjects))) {
+                            $em->persist($outObjects["person"]);
+                            $outObjects["lead"]->setPerson($outObjects["person"]);
+                        }
                         $outObjects["lead"]->setStatus('new');
                         $em->persist($outObjects["lead"]);
                         $success++;
