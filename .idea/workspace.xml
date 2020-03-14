@@ -1,52 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="85095f82-fd21-4887-bd49-2f32a4536a32" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="85095f82-fd21-4887-bd49-2f32a4536a32" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.env.test" beforeDir="false" afterPath="$PROJECT_DIR$/.env.test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INSTALL.txt" beforeDir="false" afterPath="$PROJECT_DIR$/INSTALL.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/console" beforeDir="false" afterPath="$PROJECT_DIR$/bin/console" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/phpunit" beforeDir="false" afterPath="$PROJECT_DIR$/bin/phpunit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bootstrap.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bootstrap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/cache.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/cache.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/dev/debug.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/debug.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/dev/easy_log_handler.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/easy_log_handler.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/dev/monolog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/monolog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/dev/routing.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/routing.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/dev/swiftmailer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/swiftmailer.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/dev/web_profiler.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/web_profiler.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/doctrine_migrations.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine_migrations.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/framework.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/framework.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/prod/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/prod/doctrine.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/prod/monolog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/prod/monolog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/routing.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/routing.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/sensio_framework_extra.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/sensio_framework_extra.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/stof_doctrine_extensions.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/stof_doctrine_extensions.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/swiftmailer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/swiftmailer.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/test/framework.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/test/framework.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/test/monolog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/test/monolog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/test/routing.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/test/routing.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/test/swiftmailer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/test/swiftmailer.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/test/validator.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/test/validator.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/test/web_profiler.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/test/web_profiler.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/translation.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/translation.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/validator.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/validator.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes/annotations.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes/annotations.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes/dev/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes/dev/twig.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes/dev/web_profiler.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes/dev/web_profiler.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crud.sh" beforeDir="false" afterPath="$PROJECT_DIR$/crud.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phpunit.xml.dist" beforeDir="false" afterPath="$PROJECT_DIR$/phpunit.xml.dist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bundles/AppBundle.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bundles/AppBundle.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/AddressController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AddressController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BaseController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/AdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/BusinessController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/BusinessController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/JobController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/LeadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/LeadController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/NoteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/NoteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/QuoteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/QuoteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/ReportController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Crm/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Crm/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/EventController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/EventController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ImportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ImportController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/PersonController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PersonController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UtilController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UtilController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Address.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Address.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/BaseObject.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/BaseObject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/Business.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/Business.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/Job.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/Lead.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/Lead.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/Note.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/Note.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/Quote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/Quote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Crm/Util.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Crm/Util.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Event.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Event.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Person.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Person.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/AddressType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AddressType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/AdminPropertiesType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/AdminPropertiesType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/BusinessType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/BusinessType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/InvoiceType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/InvoiceType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/JobType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/JobType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/LeadType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/LeadType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/NoteType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/NoteType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/QuoteType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/QuoteType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/Crm/UserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/Crm/UserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/EventType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/EventType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/LocationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/LocationType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PersonType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PersonType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Migrations/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/AddressRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/AddressRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/address/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/address/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/address/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/address/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/address/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/address/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/address/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/address/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/address/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/address/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/address/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/address/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/admin_properties/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/admin_properties/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/admin_properties/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/admin_properties/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/admin_properties/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/admin_properties/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/admin_properties/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/admin_properties/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/admin_properties/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/admin_properties/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/admin_properties/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/admin_properties/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/business/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/business/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/business/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/business/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/business/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/business/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/business/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/business/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/business/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/business/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/business/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/business/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/contact/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/contact/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/contact/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/contact/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/contact/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/contact/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/contact/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/contact/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/contact/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/contact/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/contact/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/contact/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/email/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/email/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/email/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/email/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/email/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/email/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/email/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/email/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/email/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/email/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/email/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/email/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/invoice/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/invoice/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/invoice/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/invoice/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/invoice/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/invoice/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/invoice/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/invoice/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/invoice/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/invoice/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/invoice/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/invoice/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job_properties/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job_properties/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job_properties/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job_properties/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job_properties/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job_properties/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job_properties/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job_properties/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job_properties/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job_properties/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/job_properties/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/job_properties/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/lead/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/lead/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/lead/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/lead/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/lead/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/lead/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/lead/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/lead/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/lead/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/lead/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/lead/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/lead/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/note/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/note/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/note/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/note/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/note/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/note/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/note/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/note/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/note/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/note/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/note/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/note/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/quote/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/quote/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/quote/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/quote/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/quote/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/quote/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/quote/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/quote/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/quote/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/quote/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/quote/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/quote/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/service/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/service/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/service/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/service/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/service/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/service/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/service/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/service/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/service/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/service/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/service/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/service/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/task/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/task/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/task/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/task/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/task/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/task/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/task/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/task/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/task/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/task/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/task/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/task/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/tax_rate/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/tax_rate/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/tax_rate/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/tax_rate/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/tax_rate/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/tax_rate/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/tax_rate/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/tax_rate/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/tax_rate/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/tax_rate/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/tax_rate/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/tax_rate/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/user/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/user/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/user/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/user/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/user/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/user/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/user/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/crm/user/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/crm/user/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/location/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/location/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/location/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/location/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/location/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/location/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/location/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/location/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/location/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/location/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/location/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/location/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/permission/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/permission/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/permission/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/permission/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/permission/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/permission/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/permission/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/permission/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/permission/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/permission/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/permission/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/permission/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/person/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/person/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/person/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/person/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/person/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/person/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/tests/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/translations/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution>
       <executable />
     </execution>
   </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Controller/DataController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/routes.yaml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/Controller/ApiController.php" />
-        <option value="$PROJECT_DIR$/src/Controller/DataController.php" />
-        <option value="$PROJECT_DIR$/config/routes.yaml" />
-      </list>
-    </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -155,22 +334,18 @@
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
       <path value="$PROJECT_DIR$/vendor/jdorn/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/apache-pack" />
+      <path value="$PROJECT_DIR$/vendor/gedmo/doctrine-extensions" />
+      <path value="$PROJECT_DIR$/vendor/behat/transliterator" />
+      <path value="$PROJECT_DIR$/vendor/stof/doctrine-extensions-bundle" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-11" />
-    <option name="y" value="-11" />
-    <option name="width" value="1383" />
-    <option name="height" value="993" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
-    </panes>
+  <component name="ProjectId" id="1Z6pQgrmTbgUkhvboh3Ivo3cPAO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -182,15 +357,15 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -205,53 +380,11 @@
       <option name="presentableId" value="Default" />
       <updated>1570256510377</updated>
       <workItem from="1570256511560" duration="2385000" />
+      <workItem from="1584169384924" duration="4311000" />
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2385000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2497979" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32978722" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/routes.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/DataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

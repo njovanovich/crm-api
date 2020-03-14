@@ -69,6 +69,7 @@ class ReportController extends AbstractController
 
         $result = $query->getArrayResult();
 
+        $data = array();
         foreach ($result as $row) {
             $leadUpdated = $row['lead']['updated'];
             $jobCompleted = $row['completedDate'];

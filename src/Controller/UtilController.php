@@ -175,6 +175,16 @@ class UtilController extends AbstractController
                             'leaf' => true,
                         ],
                         (object)[
+                            'text' => 'Create Lead',
+                            'onclick' => '
+                                var w=fetchOrCreate("wndLead");
+                                w.show();
+                            ',
+                            'icon' => '/images/icons/png/16x16/Sync.png',
+                            'cls' => 'pointer',
+                            'leaf' => true,
+                        ],
+                        (object)[
                             'text' => 'All Leads',
                             'onclick' => '
                                 Ext.getCmp("tbpMain").getLayout().setActiveItem("pnlLead");
